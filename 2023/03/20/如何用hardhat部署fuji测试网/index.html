@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    如何用hardhat部署fuji测试网 | Step by Step
+  </title>
+  <meta name="description" content="一步一步的">
+  
+  <meta name="keywords" content="
+  web3
+  ">
+  
+  <meta name="author" content="Sai">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/">Archives</a></li>
+        
+        
+        <li><a href="/">Categories</a></li>
+        
+        
+        <li><a href="/">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://avatars.githubusercontent.com/u/56356960?s=400"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/"
+           class="header-toolbar-right"> 1 </a>
+      </li>
+      <li>
+        <a href="/" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/"
+           class="header-toolbar-right"> 1 </a>
+      </li>
+      <li>
+        <a href="/" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/"
+           class="header-toolbar-right"> 1 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Step by Step</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sai
+
+    <span class="post-date float-right" title="{{moment(1679298348000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1679298348000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>如何用hardhat部署fuji测试网</h1>
+    <h1 id="harthat"><a class="markdownIt-Anchor" href="#harthat">#</a> harthat</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我们将经常使用名为 Hardhat 的工具。这将使我们能够轻松启动本地以太坊网络，并为我们提供假测试 ETH 和假测试账户。请记住，它就像一个本地服务器，除了“服务器”是区块链。</span><br><span class="line"></span><br><span class="line">快速编译智能合约并在我们本地的区块链上进行测试。</span><br></pre></td></tr></table></figure>
+<p>Hardhat 是一个编译、部署、测试和调试以太坊应用的开发环境。它可以帮助开发人员管理和自动化构建智能合约和 DApps 过程中固有的重复性任务，并围绕这一工作流程轻松引入更多功能。这意味着 hardhat 最核心的地方是编译、运行和测试智能合约。</p>
+<h2 id="安装nvm"><a class="markdownIt-Anchor" href="#安装nvm">#</a> 安装 nvm</h2>
+<p><a target="_blank" rel="noopener" href="https://hardhat.org/tutorial/setting-up-the-environment?utm_source=buildspace.so&amp;utm_medium=buildspace_project">英文版</a></p>
+<p><a target="_blank" rel="noopener" href="https://learnblockchain.cn/docs/hardhat/tutorial/setting-up-the-environment.html">中文版</a></p>
+<h2 id="hardhat方面"><a class="markdownIt-Anchor" href="#hardhat方面">#</a> hardhat 方面</h2>
+<h3 id="1创建npm项目"><a class="markdownIt-Anchor" href="#1创建npm项目">#</a> 1. 创建 npm 项目</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir hardhat_fuji_demo</span><br><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%911.png" alt="如何用hardhat部署fuji测试网1.png"></p>
+<h3 id="2npm安装hardhat"><a class="markdownIt-Anchor" href="#2npm安装hardhat">#</a> 2.npm 安装 hardhat</h3>
+<p>npm install --save-dev hardhat</p>
+<h3 id="3执行npx-hardhat"><a class="markdownIt-Anchor" href="#3执行npx-hardhat">#</a> 3. 执行 npx hardhat</h3>
+<p>选择：<br>
+<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%912.png" alt="如何用hardhat部署fuji测试网2.png"><br>
+ <code>Create an advanced sample project that uses TypeScript</code> <br>
+=&gt; Create a TypeScript project(12.29)<br>
+ 其他选择默认</p>
+<p>效果如下：<br>
+<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%913.png" alt="如何用hardhat部署fuji测试网3.png"></p>
+<h3 id="3启动本地测试节点"><a class="markdownIt-Anchor" href="#3启动本地测试节点">#</a> 3. 启动本地测试节点</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npx hardhat node</span><br><span class="line"></span><br><span class="line">会生成20个供测试的account和private key</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%914.png" alt="如何用hardhat部署fuji测试网4.png"></p>
+<h3 id="4测试"><a class="markdownIt-Anchor" href="#4测试">#</a> 4. 测试</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @openzeppelin/contracts</span><br></pre></td></tr></table></figure>
+<p>1. 在 contracts 目录下创建 superToken 文件<br>
+ <code>touch contracts/SuperToken.sol</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">import &quot;@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol&quot;;</span><br><span class="line">import &quot;@openzeppelin/contracts/utils/Counters.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract SuperToken is ERC721URIStorage &#123;</span><br><span class="line">    using Counters for Counters.Counter;</span><br><span class="line">    Counters.Counter private _tokenIds;</span><br><span class="line"></span><br><span class="line">    constructor() ERC721(&quot;SuperToken&quot;, &quot;SUP&quot;) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    function mint(address to, string memory tokenURI) public returns (uint256)</span><br><span class="line">    &#123;</span><br><span class="line">        uint256 newItemId = _tokenIds.current();</span><br><span class="line">        _mint(to, newItemId);</span><br><span class="line">        _setTokenURI(newItemId, tokenURI);</span><br><span class="line"></span><br><span class="line">        _tokenIds.increment();</span><br><span class="line">        return newItemId;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.touch test/supertoken.ts</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123; expect &#125; from &quot;chai&quot;;</span><br><span class="line">import &#123; ethers &#125; from &quot;hardhat&quot;;</span><br><span class="line">import &#123; Signer, BigNumber &#125; from &quot;ethers&quot;;</span><br><span class="line"></span><br><span class="line">describe(&quot;SuperToken&quot;, function () &#123;</span><br><span class="line">  it(&quot;Should return the new greeting once it&#x27;s changed&quot;, async function () &#123;</span><br><span class="line">    const SuperToken = await ethers.getContractFactory(&quot;SuperToken&quot;);</span><br><span class="line">    const sup = await SuperToken.deploy();</span><br><span class="line">    await sup.deployed();</span><br><span class="line"></span><br><span class="line">    let one: Signer, two: Signer, three: Signer, four: Signer, five: Signer;</span><br><span class="line">    let oneAddr: string, twoAddr: string, threeAddr: string, fourAddr: string, fiveAddr: string;</span><br><span class="line">    [one, two, three] = await ethers.getSigners();</span><br><span class="line">    [oneAddr, twoAddr, threeAddr] = await Promise.all([one, two, three].map((s) =&gt; s.getAddress()));</span><br><span class="line"></span><br><span class="line">    console.log(await sup.mint(oneAddr, &quot;one&quot;));</span><br><span class="line">    console.log(await sup.mint(twoAddr, &quot;two&quot;));</span><br><span class="line">    console.log(await sup.ownerOf(0));</span><br><span class="line">    console.log(await sup.ownerOf(1));</span><br><span class="line">    console.log(oneAddr);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>npx hardhat test --network localhost test/index.ts</code> <br>
+ <code>npx hardhat test --network localhost scripts/deploy.ts</code> <br>
+<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%915.png" alt="如何用hardhat部署fuji测试网5.png"></p>
+<p><code>npx hardhat test --network localhost test/supertoken.ts</code> <br>
+<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%916.png" alt="如何用hardhat部署fuji测试网6.png"></p>
+<h2 id="部署"><a class="markdownIt-Anchor" href="#部署">#</a> 部署</h2>
+<p>npx hardhat run scripts/deploy.ts --network fuji</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Lock with 1 ETH and unlock timestamp 1703820977 deployed to 0xd2E73998A99BB3bf32823Eff6968a1732E5e97c5</span><br><span class="line"></span><br><span class="line">Lock with 1 ETH and unlock timestamp 1703821199 deployed to 0x1D9b332ADC215Dd6373257eab92D3B00e1066043</span><br></pre></td></tr></table></figure>
+  </article>
+</div>
+
+
+    
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sai.show/2023/03/20/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%91/";
+    this.page.identifier = 1679298348;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sai1024.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://sai.show" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2023 Sai</li>
+      <li><a href="https://sai.show">Home</a></li>
+      
+      <li><a target="_blank" rel="noopener" href="https://github.com/sai1024">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Author
+      by <a target="_blank" rel="noopener" href="//github.com/sabrinaluo">Sai</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
