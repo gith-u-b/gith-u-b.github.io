@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    ActiveSupport::Concern 源码分析与实际应用 | Step by Step
+  </title>
+  <meta name="description" content="一步一步的">
+  
+  <meta name="keywords" content="
+  ruby
+  ">
+  
+  <meta name="author" content="Sai">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/">Archives</a></li>
+        
+        
+        <li><a href="/">Categories</a></li>
+        
+        
+        <li><a href="/">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://avatars.githubusercontent.com/u/56356960?s=400"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/"
+           class="header-toolbar-right"> 2 </a>
+      </li>
+      <li>
+        <a href="/" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/"
+           class="header-toolbar-right"> 2 </a>
+      </li>
+      <li>
+        <a href="/" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/"
+           class="header-toolbar-right"> 2 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Step by Step</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sai
+
+    <span class="post-date float-right" title="{{moment(1681976013000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1681976013000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>ActiveSupport::Concern 源码分析与实际应用</h1>
+    <p>在 Ruby on Rails 中， <code>ActiveSupport::Concern</code>  是一个非常有用的模块，它能够简化我们在编写可重用和组合的代码片段时的工作流程。本文将对  <code>ActiveSupport::Concern</code>  的源代码进行分析，并结合实际项目案例，帮助我们更好地理解其工作原理与应用方式。</p>
+<h2 id="源码分析"><a class="markdownIt-Anchor" href="#源码分析">#</a> 源码分析</h2>
+<p>首先，让我们来分析一下  <code>ActiveSupport::Concern</code>  的源码。它的核心思想是利用 Ruby 的模块特性来实现代码的封装和复用。</p>
+<h3 id="关键方法"><a class="markdownIt-Anchor" href="#关键方法">#</a> 关键方法</h3>
+<ol>
+<li><code>included</code>  类方法：定义一个在模块被包含到其他类或模块时执行的回调方法。</li>
+<li><code>class_methods</code>  类方法：定义一个模块，其中的方法将成为使用该模块的类的类方法。</li>
+<li><code>append_features</code>  实例方法：在模块被包含到类中时，通过调用  <code>append_features</code>  方法来将模块中的实例方法添加到类中。</li>
+<li><code>extended</code>  类方法：定义一个在模块被扩展到对象时执行的回调方法。</li>
+</ol>
+<h3 id="工作原理"><a class="markdownIt-Anchor" href="#工作原理">#</a> 工作原理</h3>
+<ol>
+<li>当一个模块使用  <code>include</code>  关键字被包含到一个类中时，Ruby 会调用该模块的  <code>append_features</code>  方法。</li>
+<li>在  <code>append_features</code>  方法内部， <code>ActiveSupport::Concern</code>  会自动将模块中的实例方法添加到包含模块的类中。</li>
+<li>如果模块定义了  <code>included</code>  方法，该方法会在模块被包含到其他类中时被触发。</li>
+</ol>
+<h2 id="实际应用场景"><a class="markdownIt-Anchor" href="#实际应用场景">#</a> 实际应用场景</h2>
+<h3 id="1-model-callbacks"><a class="markdownIt-Anchor" href="#1-model-callbacks">#</a> 1. Model Callbacks</h3>
+<p>在 Rails 中，我们经常需要定义模型的回调方法来执行一些特定的操作。通过使用  <code>ActiveSupport::Concern</code> ，我们可以将模型的回调方法封装为一个模块，并在需要时引入到模型中。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="title class_">Sluggable</span></span><br><span class="line">  <span class="keyword">extend</span> <span class="title class_">ActiveSupport::Concern</span></span><br><span class="line"></span><br><span class="line">  included <span class="keyword">do</span></span><br><span class="line">    before_validation <span class="symbol">:generate_slug</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">generate_slug</span></span><br><span class="line">    <span class="variable language_">self</span>.slug = ... <span class="comment"># 生成唯一的 slug 的逻辑</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Post</span> &lt; <span class="title class_ inherited__">ApplicationRecord</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Sluggable</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>通过这种方式，我们可以将模型的回调逻辑封装到一个模块中，使代码更加简洁和可读。</p>
+<h3 id="2-controller-concerns"><a class="markdownIt-Anchor" href="#2-controller-concerns">#</a> 2. Controller Concerns</h3>
+<p>在 Rails 控制器中，我们经常需要共享一些公共的行为或配置。ActiveSupport::Concern 提供了一种简洁的方式来封装这些公共行为，并在控制器中引入。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="title class_">Pagination</span></span><br><span class="line">  <span class="keyword">extend</span> <span class="title class_">ActiveSupport::Concern</span></span><br><span class="line"></span><br><span class="line">  included <span class="keyword">do</span></span><br><span class="line">    before_action <span class="symbol">:set_page</span>, <span class="symbol">only:</span> [<span class="symbol">:index</span>]</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">set_page</span></span><br><span class="line">    <span class="variable">@page</span> = params[<span class="symbol">:page</span>] |<span class="params"></span>| <span class="number">1</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UsersController</span> &lt; <span class="title class_ inherited__">ApplicationController</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Pagination</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">index</span></span><br><span class="line">    <span class="variable">@users</span> = <span class="title class_">User</span>.page(<span class="variable">@page</span>)</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这样，我们可以将控制器中的公共行为封装到一个模块中，使代码更加模块化和可维护。</p>
+<p><strong>Concern 最好命名以 able 结尾～</strong></p>
+
+  </article>
+</div>
+
+
+    
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sai.show/2023/04/20/ActiveSupport-Concern%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/";
+    this.page.identifier = 1681976013;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sai1024.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://sai.show" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2023 Sai</li>
+      <li><a href="https://sai.show">Home</a></li>
+      
+      <li><a target="_blank" rel="noopener" href="https://github.com/sai1024">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Author
+      by <a target="_blank" rel="noopener" href="//github.com/sabrinaluo">Sai</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
