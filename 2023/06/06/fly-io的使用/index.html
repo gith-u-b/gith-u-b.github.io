@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    fly.io的使用 | Step by Step
+  </title>
+  <meta name="description" content="一步一步的">
+  
+  <meta name="keywords" content="
+  部署
+  ">
+  
+  <meta name="author" content="Sai">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://avatars.githubusercontent.com/u/56356960?s=400"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 3 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 3 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 3 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Step by Step</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sai
+
+    <span class="post-date float-right" title="{{moment(1686025222000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1686025222000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>fly.io的使用</h1>
+    <p>目前团队采用的部署方式是 <a target="_blank" rel="noopener" href="http://Fly.io">Fly.io</a>，用了一段时间了，记录一下。</p>
+<p><a target="_blank" rel="noopener" href="http://Fly.io">Fly.io</a> 是一个基于容器的部署平台，能够保证开发和生产的环境运行在同一环境。</p>
+<p>普通部署的话，需要在服务器上安装对应的环境，比较麻烦。而且 Fly.io 部署起来会更方便，价格也会很便宜。</p>
+<h3 id="安装命令"><a class="markdownIt-Anchor" href="#安装命令">#</a> 安装命令</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://fly.io/install.sh | sh</span><br></pre></td></tr></table></figure>
+<h2 id="登陆"><a class="markdownIt-Anchor" href="#登陆">#</a> 登陆</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flyctl auth login</span><br></pre></td></tr></table></figure>
+<p>会提示 (点击里面的链接来确认登陆):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">failed opening browser. Copy the url (https://fly.io/app/auth/cli/f71341b207055cb68e89fdcd3b049f0c) into a browser and continue</span><br><span class="line">Opening https://fly.io/app/auth/cli/f71341b207055cb68e89fdcd3b049f0c ...(点击这个地址来登陆)</span><br><span class="line"></span><br><span class="line">Waiting for session... Done</span><br><span class="line">successfully logged in as rubyer1993@gmail.com</span><br></pre></td></tr></table></figure>
+<p>不要忘了绑定信用卡。</p>
+<p>拿一个月前用 fly.io 在 Sinatra 例子部署的演示：</p>
+<h2 id="apprb-文件"><a class="markdownIt-Anchor" href="#apprb-文件">#</a> app.rb 文件</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env ruby</span><br><span class="line"></span><br><span class="line">require &#x27;rubygems&#x27;</span><br><span class="line">require &#x27;bundler/setup&#x27;</span><br><span class="line">require &#x27;sinatra&#x27;</span><br><span class="line"></span><br><span class="line">get &#x27;/&#x27; do</span><br><span class="line">  &quot;&lt;h1&gt;钟梦最漂亮&lt;/h1&gt;&quot; # 帮朋友注册个专属域名</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &#x27;/:name&#x27; do</span><br><span class="line">  &quot;&lt;h1&gt;我是小梦&lt;/h1&gt;&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="gemfile-文件"><a class="markdownIt-Anchor" href="#gemfile-文件">#</a> Gemfile 文件</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">source &#x27;https://rubygems.org&#x27;</span><br><span class="line"></span><br><span class="line">ruby &#x27;3.0.3&#x27;</span><br><span class="line">gem &#x27;sinatra&#x27;</span><br><span class="line">gem &#x27;puma&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="configru"><a class="markdownIt-Anchor" href="#configru">#</a> <a target="_blank" rel="noopener" href="http://config.ru">config.ru</a></h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require &#x27;./app.rb&#x27;</span><br><span class="line"></span><br><span class="line">run Sinatra::Application</span><br></pre></td></tr></table></figure>
+<p>运行 flyctl launch。</p>
+<p>可以看到，服务已经跑起来了。</p>
+<p>这里可以看到服务的详细信息。访问地址：<a target="_blank" rel="noopener" href="https://zhongmeng.fly.dev/">https://zhongmeng.fly.dev/</a></p>
+<p>会在本地生成 fly.toml 文件，内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># fly.toml file generated for sai on 2022-08-03T23:39:57+08:00</span><br><span class="line"></span><br><span class="line">app = &quot;zhongmeng&quot;</span><br><span class="line">kill_signal = &quot;SIGINT&quot;</span><br><span class="line">kill_timeout = 5</span><br><span class="line">processes = []</span><br><span class="line"></span><br><span class="line">[build]</span><br><span class="line">  builder = &quot;heroku/buildpacks:20&quot;</span><br><span class="line"></span><br><span class="line">[env]</span><br><span class="line">  PORT = &quot;8080&quot;</span><br><span class="line"></span><br><span class="line">[experimental]</span><br><span class="line">  allowed_public_ports = []</span><br><span class="line">  auto_rollback = true</span><br><span class="line"></span><br><span class="line">[[services]]</span><br><span class="line">  http_checks = []</span><br><span class="line">  internal_port = 8080</span><br><span class="line">  processes = [&quot;app&quot;]</span><br><span class="line">  protocol = &quot;tcp&quot;</span><br><span class="line">  script_checks = []</span><br><span class="line">  [services.concurrency]</span><br><span class="line">    hard_limit = 25</span><br><span class="line">    soft_limit = 20</span><br><span class="line">    type = &quot;connections&quot;</span><br><span class="line"></span><br><span class="line">  [[services.ports]]</span><br><span class="line">    force_https = true</span><br><span class="line">    handlers = [&quot;http&quot;]</span><br><span class="line">    port = 80</span><br><span class="line"></span><br><span class="line">  [[services.ports]]</span><br><span class="line">    handlers = [&quot;tls&quot;, &quot;http&quot;]</span><br><span class="line">    port = 443</span><br><span class="line"></span><br><span class="line">  [[services.tcp_checks]]</span><br><span class="line">    grace_period = &quot;1s&quot;</span><br><span class="line">    interval = &quot;15s&quot;</span><br><span class="line">    restart_limit = 0</span><br><span class="line">    timeout = &quot;2s&quot;</span><br></pre></td></tr></table></figure>
+<p>如果对代码进行修改之后，重新执行部署就会生效：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fly deploy --remote-only</span><br></pre></td></tr></table></figure>
+<p>进入 console 控制台：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flyctl ssh console</span><br></pre></td></tr></table></figure>
+<p>进入 Rails console，在 app 目录下执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/rails console</span><br></pre></td></tr></table></figure>
+<p>连接 PostgreSQL 数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flyctl postgres connect -a &lt;contract-api-db&gt;</span><br></pre></td></tr></table></figure>
+<p>如果想在外部连接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flyctl proxy 5432 -a &lt;contract-api-db&gt;</span><br></pre></td></tr></table></figure>
+<p>然后可以通过以下方式连接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psql postgres://database_name:LJNA12LSAI@localhost:5432</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psql -U database_name -h 127.0.0.1 -p 5432</span><br></pre></td></tr></table></figure>
+<p>导入文件到 <a target="_blank" rel="noopener" href="http://Fly.io">Fly.io</a> 服务器上的 PostgreSQL：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psql -h 127.0.0.1 -U database_name -d database_name -f file.sql</span><br></pre></td></tr></table></figure>
+<h1 id="flyio"><a class="markdownIt-Anchor" href="#flyio">#</a> <a target="_blank" rel="noopener" href="http://Fly.io">Fly.io</a> 的各种报错：</h1>
+<p>1.Error failed building options: failed probing “personal”: context deadline exceeded</p>
+<p>解决方法：需要重新登录 (flyctl auth login)</p>
+<p>2.You don’t have net-smtp installed in your application. Please add it to your Gemfile and run bundle install</p>
+<p>解决方法：在 Gemfile 中添加以下内容：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gem <span class="string">&#x27;net-smtp&#x27;</span>, <span class="symbol">require:</span> <span class="literal">false</span></span><br><span class="line">gem <span class="string">&#x27;net-imap&#x27;</span>, <span class="symbol">require:</span> <span class="literal">false</span></span><br><span class="line">gem <span class="string">&#x27;net-pop&#x27;</span>, <span class="symbol">require:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>3. 在部署过程中 rails assets::precompile 执行命令错误</p>
+<p>解决方法：注释掉 dockerfile 中的两个 without，同时注释掉下面标记为 # 的部分。</p>
+<p>4.remote builder app unavalilable</p>
+<p>解决方法：删除 <a target="_blank" rel="noopener" href="http://Fly.io">Fly.io</a> 的 fly-builder-nameless-XXX（可以在 <a target="_blank" rel="noopener" href="http://Fly.io">Fly.io</a> 的 Apps 查看），然后重新执行 fly deploy 即可。</p>
+<p>5. 部署成功后，访问 Fly 生成的 URL 提示 403 或打不开（Rails）</p>
+<p>在 config/application.rb 文件中添加生成的 URL，例如：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.hosts &lt;&lt; <span class="string">&#x27;sai.fly.dev&#x27;</span></span><br></pre></td></tr></table></figure>
+  </article>
+</div>
+
+
+    
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sai.show/2023/06/06/fly-io%E7%9A%84%E4%BD%BF%E7%94%A8/";
+    this.page.identifier = 1686025222;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sai1024.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://sai.show" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2023 Sai</li>
+      <li><a href="https://sai.show">Home</a></li>
+      
+      <li><a target="_blank" rel="noopener" href="https://github.com/sai1024">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Author
+      by <a target="_blank" rel="noopener" href="//github.com/sabrinaluo">Sai</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
