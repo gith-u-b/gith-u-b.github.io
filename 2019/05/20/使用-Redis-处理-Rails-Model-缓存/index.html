@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    使用 Redis 处理 Rails Model 缓存 | Step by Step
+  </title>
+  <meta name="description" content="一步一步的">
+  
+  <meta name="keywords" content="
+  ruby
+  ">
+  
+  <meta name="author" content="Sai">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://avatars.githubusercontent.com/u/56356960?s=400"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 7 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 4 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 4 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Step by Step</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sai
+
+    <span class="post-date float-right" title="{{moment(1558337613000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1558337613000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>使用 Redis 处理 Rails Model 缓存</h1>
+    <p>Model 层的缓存常常都会被忽略，甚至是经验丰富的码农。当你对视图层做缓存时，你不需要进行底层缓存，这是一个非常常见的误解。虽然在 Rails 里大部分的瓶颈在于视图层，但是总有个别情况不是这样的。</p>
+<p>底层缓存是非常灵活的，可以工作于任何一个应用程序。在本教程中，我将演示如何使用 Redis 来缓存你的 model 层。</p>
+<p>缓存是如何工作的？<br>
+过去，访问磁盘的成本已经非常高了。而且从磁盘访问数据经常会对性能产生不利的影响。为了解决这个问题，我们可以在应用程序和数据库服务器之间加上缓存层。</p>
+<p>缓存层在初始化时是没有任何数据的。当它接收到数据请求时，它会调用数据库并将结果存储在内存中（缓存）。所有后续的请求将从缓存层直接读取数据，所以可以避免不重复往返的访问数据库服务器，从而提高性能。</p>
+<p>为什么使用 Redis？<br>
+Redis 是一个基于内存、Key-Value 存储系统。它的速度极快，几乎是瞬间完成数据检索。Redis 支持先进的数据结构，如链表，哈希表，集合，并能持续保存到磁盘。</p>
+<p>虽然大多数码农更喜欢使用 Memcache 和 Dalli 去处理他们的缓存化的需求，但我发现 Redis 非常容易的安装和方便管理。另外，如果你使用的是 resque 或 Sidekiq 管理你的队列，你很可能已经安装了 Redis 了。对于那些有兴趣了解何时使用 Redis 的朋友们，可以到这个 讨论 里了解更多相关信息。</p>
+<p>前提<br>
+我假设你的项目正在使用 Rails，文章中的例子是使用 Rails 4.2.rc1，使用 haml 渲染视图和 MongoDB 作为数据库，但是本教程的片段应该适用于任何版本的 Rails。</p>
+<p>在开始之前，你需要安装和运行 Redis。进入你的应用程序目录，并执行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://download.redis.io/releases/redis-2.8.18.tar.gz</span><br><span class="line">$ tar xzf redis-2.8.18.tar.gz</span><br><span class="line">$ cd redis-2.8.18</span><br><span class="line">$ make</span><br></pre></td></tr></table></figure>
+<p>这个命令将需要一段时间才能完成。一旦完成了，就可以开启 Redis 服务了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd redis-2.8.18/src</span><br><span class="line">$ ./redis-server</span><br></pre></td></tr></table></figure>
+<p>使用 gem “rack-mini-profiler” 可以测量性能提升，这个 gem 可以帮助我们正确的体现出性能的改善。</p>
+<h2 id="开始"><a class="markdownIt-Anchor" href="#开始">#</a> 开始</h2>
+<p>例如，让我们构建一个虚拟的在线故事书阅读书店。这个书店有各种各样的书籍和语言。首先，让我们创建模型：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/models/category.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Category</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Mongoid::Document</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Mongoid::Timestamps</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Mongoid::Paranoia</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">CommonMeta</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># app/models/language.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Language</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Mongoid</span>: <span class="symbol">:Document</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Mongoid::Timestamps</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">Mongoid::Paranoia</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">CommonMeta</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># app/models/concerns/common_meta.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="title class_">CommonMeta</span></span><br><span class="line">  <span class="keyword">extend</span> <span class="title class_">ActiveSupport::Concern</span></span><br><span class="line">  included <span class="keyword">do</span></span><br><span class="line">    field <span class="symbol">:name</span>, <span class="symbol">:type</span> =&gt; <span class="title class_">String</span></span><br><span class="line">    field <span class="symbol">:desc</span>, <span class="symbol">:type</span> =&gt; <span class="title class_">String</span></span><br><span class="line">    field <span class="symbol">:page_title</span>, <span class="symbol">:type</span> =&gt; <span class="title class_">String</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这里包括了一个 <a target="_blank" rel="noopener" href="https://github.com/skmvasu/redis_cache_sitepoint/blob/master/db/seeds.rb">seed</a> 数据文件。只要复制粘贴到你的 seeds.rb 和运行 rake seed 任务，数据就会加载到我们的数据库中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:seed</span><br></pre></td></tr></table></figure>
+<p>现在，让我们创建一个简单的 Category 列表页面，该页面显示了所有 Categories 的描述和标记信息。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/controllers/category_controller.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CategoryController</span> &lt; <span class="title class_ inherited__">ApplicationController</span></span><br><span class="line">  <span class="keyword">include</span> <span class="title class_">CategoryHelper</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">index</span></span><br><span class="line">    <span class="variable">@categories</span> = <span class="title class_">Category</span>.all</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># app/helpers/category_helper.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="title class_">CategoryHelper</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">fetch_categories</span></span><br><span class="line">    <span class="variable">@categories</span> = <span class="title class_">Category</span>.all</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># app/views/category/index.html.haml</span></span><br><span class="line"></span><br><span class="line">%h1</span><br><span class="line">  <span class="title class_">Category</span> <span class="title class_">Listing</span></span><br><span class="line">%ul<span class="comment">#categories</span></span><br><span class="line">  - <span class="variable">@categories</span>.each <span class="keyword">do</span> |<span class="params">cat</span>|</span><br><span class="line">      %li</span><br><span class="line">        %h3</span><br><span class="line">          = cat.name</span><br><span class="line">        %p</span><br><span class="line">          = cat.desc</span><br><span class="line"></span><br><span class="line"><span class="comment"># config.routes.rb</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Rails</span>.application.routes.draw <span class="keyword">do</span></span><br><span class="line">  resources <span class="symbol">:languages</span></span><br><span class="line">  resources <span class="symbol">:category</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>当你打开浏览器并将其地址指向 /category 时，你会发现 mini-profiler benchmarking 显示在后端执行每一个动作的时间。这些正确的数据是告诉你，你的应用程序哪部分比较缓慢和应该如何优化它们。本页面执行了两条 SQL 语句并且使用了 5ms 的时间完成查询。</p>
+<p>虽然起初看起来好像 5ms 是无关紧要的，特别是在需要更多时间去渲染视图时，但在一个生产级别的应用程序中有多次数据库查询时，它们可以明显的降低软件的性能。</p>
+<p><img src="https://l.ruby-china.com/photo/2015/853480fe43430b40618f7cc08e4987da.png" alt=""></p>
+<p>由于元数据模型是不太可能发生改变的，这样就可以避免不必要的数据库切换。这一点也是底层缓存的用武之地。</p>
+<h2 id="安装-redis"><a class="markdownIt-Anchor" href="#安装-redis">#</a> 安装 Redis</h2>
+<p>使用 Redis 基于 Ruby 的客户端来帮助我们非常方便的链接 Redis 实例：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gem <span class="string">&#x27;redis&#x27;</span></span><br><span class="line">gem <span class="string">&#x27;redis-namespace&#x27;</span></span><br><span class="line">gem <span class="string">&#x27;redis-rails&#x27;</span></span><br><span class="line">gem <span class="string">&#x27;redis-rack-cache&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>一但安装好这些 gem 后，就可以配置 Rails 使用 Redis 来作为缓存存储：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config/application.rb</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#...........</span></span><br><span class="line">config.cache_store = <span class="symbol">:redis_store</span>, <span class="string">&#x27;redis://localhost:6379/0/cache&#x27;</span>, &#123; <span class="symbol">expires_in:</span> <span class="number">90</span>.minutes &#125;</span><br><span class="line"><span class="comment">#.........</span></span><br></pre></td></tr></table></figure>
+<p>使用 redis-namespace gem 可以让我们创建一个更好的 Redis 命名空间：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config/initializers/redis.rb </span></span><br><span class="line"></span><br><span class="line"><span class="variable">$redis</span> = <span class="title class_">Redis::Namespace</span>.new(<span class="string">&quot;site_point&quot;</span>, <span class="symbol">:redis</span> =&gt; <span class="title class_">Redis</span>.new)</span><br></pre></td></tr></table></figure>
+<p>现在所有的 Redis 功能都可以通过 $redis 进行全局使用了。以下的一个例子是体现如何访问在 redis 服务器上的值（运行于 Rails console）：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>.set(<span class="string">&quot;test_key&quot;</span>, <span class="string">&quot;Hello World!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>这个命令创建了一个 key：“test_key” 和 value：“Hello World” 保存在 Redis 中。要取这个值，只做：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>.get(<span class="string">&quot;test_key&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>现在，我们有了基础知识，让我们开始重写我们的 helper 方法：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/helpers/category_helper.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="title class_">CategoryHelper</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">fetch_categories</span></span><br><span class="line">    categories =  <span class="variable">$redis</span>.get(<span class="string">&quot;categories&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> categories.<span class="literal">nil</span>?</span><br><span class="line">      categories = <span class="title class_">Category</span>.all.to_json</span><br><span class="line">      <span class="variable">$redis</span>.set(<span class="string">&quot;categories&quot;</span>, categories)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="variable">@categories</span> = <span class="variable constant_">JSON</span>.load categories</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>在第一次执行这部分代码时，内存 / 缓存中是没有任何东西的。所以我们请求 Rails 把数据从数据库推送到 Redis 中。注意到  <code>to_json</code>  的调用了吗？当要写对象进 Redis，我们多种方式。一种选择是遍历对象中的每个属性，然后将它们保存为一个哈希函数，但是这种方式较为缓慢。最简单的方法是将它们保存为一个 JSON 编码的字符串。解码，只需使用 <code>JSON.load</code> 。</p>
+<p>然而，这有一个意想不到的副作用。当我们正在检索这个值时，一个简易的对象符号不工作。我们需要更新视图并使用哈希语法来显示该类型：</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/views/category/index.html.haml</span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag">%<span class="selector-tag">h1</span></span></span><br><span class="line">  Category Listing</span><br><span class="line"><span class="tag">%<span class="selector-tag">ul</span><span class="selector-id">#categories</span></span></span><br><span class="line">  -<span class="language-ruby"> <span class="variable">@categories</span>.each <span class="keyword">do</span> |<span class="params">cat</span>|</span></span><br><span class="line"><span class="tag">    %<span class="selector-tag">li</span></span></span><br><span class="line"><span class="tag">      %<span class="selector-tag">h3</span></span></span><br><span class="line">        =<span class="language-ruby"> cat[<span class="string">&quot;name&quot;</span>]</span></span><br><span class="line"><span class="tag">      %<span class="selector-tag">p</span></span></span><br><span class="line">        =<span class="language-ruby"> cat[<span class="string">&quot;desc&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+<p>重新启动浏览器，并看看性能是否有所不同。首次访问，我们仍然访问数据库，但随后的重新加载将不在访问数据库了。以后所有的请求都将直接从缓存中读取。这个简单的变化非常有效。</p>
+<p><img src="https://l.ruby-china.com/photo/2015/fa943998d309ec7184d200795c4d8425.png" alt=""></p>
+<h2 id="管理缓存"><a class="markdownIt-Anchor" href="#管理缓存">#</a> 管理缓存</h2>
+<p>我刚发现一个关于 categories 的错误。让我们先解决它：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>rails c</span><br><span class="line"></span><br><span class="line">c = <span class="title class_">Category</span>.find_by <span class="symbol">:name</span> =&gt; <span class="string">&quot;Famly and Frends&quot;</span></span><br><span class="line">c.name = <span class="string">&quot;Family and Friends&quot;</span></span><br><span class="line">c.save</span><br></pre></td></tr></table></figure>
+<p>重新加载并查看该更新是否显示在视图中：</p>
+<p><img src="https://l.ruby-china.com/photo/2015/8a2c5ac24c03612698f75fcf390f766b.png" alt=""></p>
+<p>很遗憾，我们的视图上并没有体现出这个变化。因为我们并没有访问数据库，所有的数据都直接从缓存中读取。唉，现在的缓存已经过期，直到 Redis 重启前被更新都数据都无法使用。这个对于大多数应用程序来说真是一个破坏者啊。我们偶尔可以使用缓存到期来解决这个问题：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/helpers/category_helper.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="title class_">CategoryHelper</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">fetch_categories</span></span><br><span class="line">    categories =  <span class="variable">$redis</span>.get(<span class="string">&quot;categories&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> categories.<span class="literal">nil</span>?</span><br><span class="line">      categories = <span class="title class_">Category</span>.all.to_json</span><br><span class="line">      <span class="variable">$redis</span>.set(<span class="string">&quot;categories&quot;</span>, categories)</span><br><span class="line">      <span class="comment"># Expire the cache, every 3 hours</span></span><br><span class="line">      <span class="variable">$redis</span>.expire(<span class="string">&quot;categories&quot;</span>,<span class="number">3</span>.hour.to_i)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="variable">@categories</span> = <span class="variable constant_">JSON</span>.load categories</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>缓存将会在每 3 个小时就失效。虽然这对大多数情况下工作，缓存中的数据将滞后于现在数据库。这种工作方式很可能不抬适合你。如果你喜欢保持缓存的更新，我们可以使用 <code>after_save</code>  这个回调：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/models/category.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Category</span></span><br><span class="line">  <span class="comment">#...........</span></span><br><span class="line">  after_save <span class="symbol">:clear_cache</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">clear_cache</span></span><br><span class="line">    <span class="variable">$redis</span>.del <span class="string">&quot;categories&quot;</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  <span class="comment">#...........</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>每次模型的更新，我们都将通知 Rails 去清除缓存。这样可以确保缓存是最新的。Yay!</p>
+<blockquote>
+<p>你应该使用类似 cache_observers 在生产环境中，为了保持简洁，我们在这里坚持使用 after_save。如果你不知道哪种方法最适合你，这里的<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/15165260/rails-observer-alternatives-for-4-0">讨论</a>可能会对你有所启发。</p>
+</blockquote>
+<h2 id="结论"><a class="markdownIt-Anchor" href="#结论">#</a> 结论</h2>
+<p>底层缓存是非常简单的，如果使用得当，它是非常有价值的。它可以在你花费最小的努力下瞬间提高你的系统的性能。在这篇文章中所有的代码片断可以在 <a target="_blank" rel="noopener" href="https://github.com/skmvasu/redis_cache_sitepoint">GitHub</a> 上找到。</p>
+
+  </article>
+</div>
+
+
+    
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sai.show/2019/05/20/%E4%BD%BF%E7%94%A8-Redis-%E5%A4%84%E7%90%86-Rails-Model-%E7%BC%93%E5%AD%98/";
+    this.page.identifier = 1558337613;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sai1024.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://sai.show" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2023 Sai</li>
+      <li><a href="https://sai.show">Home</a></li>
+      
+      <li><a target="_blank" rel="noopener" href="https://github.com/sai1024">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Author
+      by <a target="_blank" rel="noopener" href="//github.com/sabrinaluo">Sai</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
