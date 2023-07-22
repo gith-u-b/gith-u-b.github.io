@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    我是如何使用docker的 | Step by Step
+  </title>
+  <meta name="description" content="一步一步的">
+  
+  <meta name="keywords" content="
+  部署
+  ">
+  
+  <meta name="author" content="Sai">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://avatars.githubusercontent.com/u/56356960?s=400"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 6 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 4 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 4 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Step by Step</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sai
+
+    <span class="post-date float-right" title="{{moment(1688098822000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1688098822000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>我是如何使用docker的</h1>
+    <h3 id="为什么要用docker"><a class="markdownIt-Anchor" href="#为什么要用docker">#</a> <strong>为什么要用 docker</strong></h3>
+<ul>
+<li>
+<p>更高效的利用系统资源</p>
+<p>由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销， <code>Docker</code>  对系统资源的利用率更高。无论是应用执行速度、内存损耗或者文件存储速度，都要比传统虚拟机技术更高效。因此，相比虚拟机技术，一个相同配置的主机，往往可以运行更多数量的应用。</p>
+</li>
+<li>
+<p>更快速的启用时间</p>
+<p>传统的虚拟机技术启动应用服务往往需要数分钟，而  <code>Docker</code>  容器应用，由于直接运行于宿主内核，无需启动完整的操作系统，因此可以做到秒级、甚至毫秒级的启动时间。大大的节约了开发、测试、部署的时间。</p>
+</li>
+<li>
+<p>一致的运行环境</p>
+<p>开发过程中一个常见的问题是环境一致性问题。由于开发环境、测试环境、生产环境不一致，导致有些 bug 并未在开发过程中被发现。而  <code>Docker</code>  的镜像提供了除内核外完整的运行时环境，确保了应用运行环境一致性，从而不会再出现 <em>「这段代码在我机器上没问题啊」</em> 这类问题。</p>
+</li>
+<li>
+<p>持续交付和部署</p>
+<p>对开发和运维（<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a>）人员来说，最希望的就是一次创建或配置，可以在任意地方正常运行。</p>
+<p>使用  <code>Docker</code>  可以通过定制应用镜像来实现持续集成、持续交付、部署。开发人员可以通过 <a href="notion://www.notion.so/Rails-on-Docker-ea24a7e7cc49431e86a40af7e72c261b">Dockerfile</a> 来进行镜像构建，并结合 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Continuous_integration">持续集成 (Continuous Integration)</a> 系统进行集成测试，而运维人员则可以直接在生产环境中快速部署该镜像，甚至结合 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Continuous_delivery">持续部署 (Continuous Delivery/Deployment)</a> 系统进行自动部署。</p>
+<p>而且使用  <code>[Dockerfile](notion://www.notion.so/Rails-on-Docker-ea24a7e7cc49431e86a40af7e72c261b)</code>  使镜像构建透明化，不仅仅开发团队可以理解应用运行环境，也方便运维团队理解应用运行所需条件，帮助更好的生产环境中部署该镜像。</p>
+</li>
+<li>
+<p>更轻松的迁移</p>
+<p>由于  <code>Docker</code>  确保了执行环境的一致性，使得应用的迁移更加容易。 <code>Docker</code>  可以在很多平台上运行，无论是物理机、虚拟机、公有云、私有云，甚至是笔记本，其运行结果是一致的。因此用户可以很轻易的将在一个平台上运行的应用，迁移到另一个平台上，而不用担心运行环境的变化导致应用无法正常运行的情况。</p>
+</li>
+<li>
+<p>更轻松的维护和扩展</p>
+<p><code>Docker</code>  使用的分层存储以及镜像的技术，使得应用重复部分的复用更为容易，也使得应用的维护更新更加简单，基于基础镜像进一步扩展镜像也变得非常简单。此外， <code>Docker</code>  团队同各个开源项目团队一起维护了一大批高质量的 <a target="_blank" rel="noopener" href="https://hub.docker.com/search/?type=image&amp;image_filter=official">官方镜像</a>，既可以直接在生产环境使用，又可以作为基础进一步定制，大大的降低了应用服务的镜像制作成本。</p>
+</li>
+</ul>
+<h3 id="安装docker"><a class="markdownIt-Anchor" href="#安装docker">#</a> 安装 docker</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -u filedown:&#x27;5DBQutXO!7$M!VCBg&#x27; http://down.dosjksds.com:18540/deploy/install_docker.sh | bash</span><br></pre></td></tr></table></figure>
+<h3 id="安装docker-compose"><a class="markdownIt-Anchor" href="#安装docker-compose">#</a> 安装 docker-compose</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+<h3 id="多阶段构建"><a class="markdownIt-Anchor" href="#多阶段构建">#</a> 多阶段构建</h3>
+<p>多阶段构建更多的是用来解决镜像过大的问题，创建好镜像后会发现自己的镜像有好几 G，这时候可以考虑用多阶段构建。</p>
+<p>多阶段构建，会允许一个 Dockerfile 中出现多个 <code>FROM</code>  命令。每个 <code>FROM</code>  都是一个新的构建阶段。</p>
+<h3 id="docker-swarm"><a class="markdownIt-Anchor" href="#docker-swarm">#</a> docker swarm</h3>
+<p>docker 服务不中断的方法可以采用上传两个镜像，一个镜像 A，一个镜像 A 的备份镜像，A_backup，然后启动两个端口，一个是 3000，另一个是 4000，当镜像发生改变的时候，可以先把备份镜像 <code>A_backup</code>  删除掉，然后重新拉取备份镜像 A_backup，这时候备份镜像就是最新的镜像，然后把镜像 A 的容器停止，因为配置了 <code>nginx</code>  的 <code>upstrem</code>  所以这时候 3000 端口会转移到 4000 端口，达到服务不中断更新代码的目的</p>
+<p>但是这样每次更新，都需要重复的去停止容器、删除容器、删除镜像的操作，不是太灵活</p>
+<p>docker swarm 是 docker 自带的集群服务可以更好的解决这个问题</p>
+<p>1. 创建应用和服务</p>
+<p><code>docker stack deploy -c docker-compose.yml myapp</code></p>
+<p>2. 查看所有服务</p>
+<p><code>docker service ls</code></p>
+<p>3. 轮训更新</p>
+<p><code>docker service update --image registry.dosjksds.com:5000/syq:1.0.0.dev myapp --with-registry-auth --update-delay 30s --update-parallelism 1</code></p>
+<ul>
+<li><code>-update-parallelism</code>  设置更新的副本数量 (比如我有 2 个副本，我可以先更新一个，然后等这一个更新完成再去更新下一个)</li>
+<li><code>-update-delay</code>  指定滚动更新的间隔时间</li>
+</ul>
+<h3 id="docker健康检查"><a class="markdownIt-Anchor" href="#docker健康检查">#</a> docker 健康检查</h3>
+<p>ruby</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">healthcheck:</span><br><span class="line">  test: &quot;curl -fs localhost:3000 || exit 1&quot;</span><br><span class="line">  interval: 30s</span><br><span class="line">  timeout: 40s</span><br><span class="line">  retries: 60</span><br></pre></td></tr></table></figure>
+<p>sidekiq</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">healthcheck:</span><br><span class="line">  test: &quot;stat /home/syq/tmp/sidekiq.pid || exit 1&quot;</span><br><span class="line">  interval: 30s</span><br><span class="line">  timeout: 40s</span><br><span class="line">  retries: 60</span><br></pre></td></tr></table></figure>
+<h3 id="修改配置文件应用新配置"><a class="markdownIt-Anchor" href="#修改配置文件应用新配置">#</a> 修改配置文件应用新配置</h3>
+<p>当需要修改 config 配置的内容时，创建新配置（使用 docker config create）然后更新服务以删除先前配置的 config，服务命令 <code>--config-rm</code>  和 <code>--config-add</code> :</p>
+<p>比如我修改了 secrets.yml，而现在在执行 <code>docker config ls</code>  时候已经存在 secrets_conf，这时候我执行下面命令，重新创建个新的配置，比如创建 secrets_conf_1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker config create secrets_conf_1 config/secrets.yml</span><br></pre></td></tr></table></figure>
+<p>然后执行下面进行 config 更新</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service update --config-rm secrets_conf --config-add src=secrets_conf_1,target=/home/app/noob/config/secrets.yml noob_app</span><br></pre></td></tr></table></figure>
+
+  </article>
+</div>
+
+
+    
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sai.show/2023/06/30/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8docker%E7%9A%84/";
+    this.page.identifier = 1688098822;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sai1024.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://sai.show" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2023 Sai</li>
+      <li><a href="https://sai.show">Home</a></li>
+      
+      <li><a target="_blank" rel="noopener" href="https://github.com/sai1024">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Author
+      by <a target="_blank" rel="noopener" href="//github.com/sabrinaluo">Sai</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
