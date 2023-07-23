@@ -8,12 +8,12 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>
-    Go 语言学习感想 | Step by Step
+    创建您自己的加密货币：ERC-20 代币分步指南 | Step by Step
   </title>
   <meta name="description" content="一步一步的">
   
   <meta name="keywords" content="
-  go
+  web3
   ">
   
   <meta name="author" content="Sai">
@@ -130,34 +130,38 @@
     <i class="fa fa-user-o"></i>
     Sai
 
-    <span class="post-date float-right" title="{{moment(1685593222000).format('MMM DD, YYYY, h:mm:ss A')}}">
+    <span class="post-date float-right" title="{{moment(1679730348000).format('MMM DD, YYYY, h:mm:ss A')}}">
       
           <i class="fa fa-pencil-square-o"></i>
       
-      {{moment(1685593222000).fromNow()}}
+      {{moment(1679730348000).fromNow()}}
     </span>
   </h3>
 
   <article class="post-content">
-    <h1>Go 语言学习感想</h1>
-    <p>这段时间做了一个 go 的外包项目，在项目实战中页学习了下 Go 语言，学习的过程分为两步，看资料教程，动手练习，陆陆续续写了一些脚本和小应用，接下来就是项目实战了，不懂得就看文档和 gpt</p>
-<p>看过的资料有:<br>
-<a target="_blank" rel="noopener" href="https://go.dev/tour/welcome/1">go tour</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12136974.html">Go 语言实战</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12187988.html">Go 语言程序设计</a></p>
-<p><a target="_blank" rel="noopener" href="https://e.jd.com/30335004.html">Go 并发编程实战</a></p>
-<p>再推荐一个比较好的实践教程：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/EDDYCJY/blog">gin 系列目录</a></p>
-<p>对着作者的叙述，边读边敲代码，整个过程很愉悦，感谢作者煎鱼的用心写作。</p>
-<p>由于这个教程是写于 2018 年，有些 Go 的新特性没有用到，我在自己练习的项目里做了一些更新： 比如使用了 go mod, xerros 等。</p>
-<p>我练习完成后的项目 <a target="_blank" rel="noopener" href="https://github.com/sai1024/go-blog">go-blog</a></p>
-<p>再读几本 go 语言的书，比如:<br>
-<a target="_blank" rel="noopener" href="https://item.jd.com/12437839.html">Go 语言核心编程</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12252845.html">Go Web 编程</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12504386.html">Go 语言并发之道</a></p>
-<p>这些书的内容可能会和以前看过的书重复，当作温习.</p>
-<p>将自己写过的一些项目试着迁移到 go 语言</p>
-<p>找几个自己感兴趣的开源 go 项目，认真研究，尝试提交 PR</p>
+    <h1>创建您自己的加密货币：ERC-20 代币分步指南</h1>
+    <p>你有没有想过创建你的加密货币？随着比特币和以太坊等加密货币的兴起，许多人正在寻找创建数字资产的方法。一种流行的选择是使用 ERC-20 标准在以太坊区块链上创建代币。</p>
+<p>ERC-20 是开发人员在以太坊区块链上创建可替代代币必须遵循的一组规则。可替代代币是可互换的资产，这意味着代币的每个单位都与其他单位相同。这使它们成为货币或其他需要易于分割和转移的资产的理想选择。</p>
+<p>要创建 ERC-20 代币，您需要编写一个智能合约来定义代币的属性和功能。我们将使用 Remix IDE 来编写这个智能合约，因为它很容易在 Remix IDE 中部署和测试合约。以下是创建您自己的 ERC-20 代币的分步指南：</p>
+<p>1. 为合约定义变量和映射。balanceOf 映射用于跟踪每个地址持有多少代币，而 allowance 映射用于跟踪一个地址允许另一个地址花费多少代币。</p>
+<p><img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1684003242585/3fbbfb9f-14d2-4d6c-8600-719115fbbc57.png?auto=compress,format&amp;format=webp" alt=""></p>
+<p>2. 定义构造函数以初始化令牌变量的状态。在这里，您将定义代币的名称、符号、小数位和总供应量。这里，名称是令牌的名称，例如 ojucoin，符号是一个简短的 3 个字符的单词，唯一定义任何令牌。例如对于 ojucoin，它可以是 OJU。Decimal 定义小数点到令牌值的位置。总供应量是我们最初供应的代币总数。最后两行定义，balanceOf 映射中的初始余额来自地址（0）。<br>
+<img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1684003370670/98d0f22c-8835-495b-bcfd-1171d3fd525a.png?auto=compress,format&amp;format=webp" alt=""></p>
+<p>3. 为合同定义事件。事件用于通知外部应用程序合约中发生的重要事件。当代币从一个地址转移到另一个地址时会触发 Transfer 事件，而当一个地址批准另一个地址花费一定数量的代币时会触发 Approve 事件。<br>
+<img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1684003427034/4434c96f-70ab-46d7-ad69-7283f153e218.png?auto=compress,format&amp;format=webp" alt=""></p>
+<p>4. 定义合约的功能。有许多功能要添加到合约中。<br>
+<img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1684004088907/50c7fa9c-b5b7-4085-9c99-d61f886bbc7b.png?auto=compress,format&amp;format=webp" alt=""></p>
+<p>transfer () 函数从发送方地址中扣除一定数量的代币，并将其转入接收方地址。<br>
+<img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1684004202536/49ae7828-38b4-490a-9ce5-67f6ee63f36d.png?auto=compress,format&amp;format=webp" alt=""></p>
+<p>approve () 函数用于授予另一个帐户从发送者帐户中花费一定数量代币的权限。<br>
+<img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1684004198368/d2d3ad65-f5e6-43e2-9407-e84c360e004f.png?auto=compress,format&amp;format=webp" alt=""></p>
+<p>transferFrom () 函数用于从发送者的账户中扣除代币并将其添加到支出者的账户中。<br>
+<img src="https://cdn.hashnode.com/res/hashnode/image/upload/v1684004160653/29569eba-210c-42fc-bdb7-8c0bd42e25f4.png?auto=compress,format&amp;format=webp" alt=""></p>
+<p>5. 部署和测试智能合约。您可以通过将令牌发送到特定地址并在 etherscan 上验证交易来测试传输功能。</p>
+<p>创建您自己的 ERC-20 代币是一种有趣且有益的体验。它允许您创建可用于多种用途的数字资产，从创建您的加密货币到为您的企业创建奖励计划。按照上述步骤，您可以创建自己的 ERC-20 令牌并加入不断发展的加密货币世界。</p>
+<blockquote>
+<p>原文：<a target="_blank" rel="noopener" href="https://ojasaklecha.hashnode.dev/creating-your-own-cryptocurrency-a-step-by-step-guide-to-erc-20-tokens">https://ojasaklecha.hashnode.dev/creating-your-own-cryptocurrency-a-step-by-step-guide-to-erc-20-tokens</a></p>
+</blockquote>
 
   </article>
 </div>
@@ -170,8 +174,8 @@
 
 <script>
   var disqus_config = function() {
-    this.page.url = "https://sai.show/2023/06/01/Go-%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E6%84%9F%E6%83%B3/";
-    this.page.identifier = 1685593222;
+    this.page.url = "https://sai.show/2023/03/25/%E5%88%9B%E5%BB%BA%E6%82%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81%EF%BC%9AERC-20-%E4%BB%A3%E5%B8%81%E5%88%86%E6%AD%A5%E6%8C%87%E5%8D%97/";
+    this.page.identifier = 1679730348;
   };
 
   (function() {
