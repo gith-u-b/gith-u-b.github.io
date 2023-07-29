@@ -8,12 +8,12 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>
-    Go 语言学习感想 | Step by Step
+    远程的工作模式(远程如何协作) | Step by Step
   </title>
   <meta name="description" content="一步一步的">
   
   <meta name="keywords" content="
-  go
+  远程
   ">
   
   <meta name="author" content="Sai">
@@ -130,34 +130,45 @@
     <i class="fa fa-user-o"></i>
     Sai
 
-    <span class="post-date float-right" title="{{moment(1685593222000).format('MMM DD, YYYY, h:mm:ss A')}}">
+    <span class="post-date float-right" title="{{moment(1690608022000).format('MMM DD, YYYY, h:mm:ss A')}}">
       
           <i class="fa fa-pencil-square-o"></i>
       
-      {{moment(1685593222000).fromNow()}}
+      {{moment(1690608022000).fromNow()}}
     </span>
   </h3>
 
   <article class="post-content">
-    <h1>Go 语言学习感想</h1>
-    <p>这段时间做了一个 go 的外包项目，在项目实战中页学习了下 Go 语言，学习的过程分为两步，看资料教程，动手练习，陆陆续续写了一些脚本和小应用，接下来就是项目实战了，不懂得就看文档和 gpt</p>
-<p>看过的资料有:<br>
-<a target="_blank" rel="noopener" href="https://go.dev/tour/welcome/1">go tour</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12136974.html">Go 语言实战</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12187988.html">Go 语言程序设计</a></p>
-<p><a target="_blank" rel="noopener" href="https://e.jd.com/30335004.html">Go 并发编程实战</a></p>
-<p>再推荐一个比较好的实践教程：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/EDDYCJY/blog">gin 系列目录</a></p>
-<p>对着作者的叙述，边读边敲代码，整个过程很愉悦，感谢作者煎鱼的用心写作。</p>
-<p>由于这个教程是写于 2018 年，有些 Go 的新特性没有用到，我在自己练习的项目里做了一些更新： 比如使用了 go mod, xerros 等。</p>
-<p>我练习完成后的项目 <a target="_blank" rel="noopener" href="https://github.com/sai1024/go-blog">go-blog</a></p>
-<p>再读几本 go 语言的书，比如:<br>
-<a target="_blank" rel="noopener" href="https://item.jd.com/12437839.html">Go 语言核心编程</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12252845.html">Go Web 编程</a></p>
-<p><a target="_blank" rel="noopener" href="https://item.jd.com/12504386.html">Go 语言并发之道</a></p>
-<p>这些书的内容可能会和以前看过的书重复，当作温习.</p>
-<p>将自己写过的一些项目试着迁移到 go 语言</p>
-<p>找几个自己感兴趣的开源 go 项目，认真研究，尝试提交 PR</p>
+    <h1>远程的工作模式(远程如何协作)</h1>
+    <h2 id="远程工作的前提"><a class="markdownIt-Anchor" href="#远程工作的前提">#</a> 远程工作的前提</h2>
+<p>相互信任，远程工作者需要在工作期间做到及时响应，不能发生 “给你发信息，一直没有人回” 的情况，可以有事情提前告知</p>
+<h2 id="沟通"><a class="markdownIt-Anchor" href="#沟通">#</a> 沟通</h2>
+<h3 id="1slack推荐"><a class="markdownIt-Anchor" href="#1slack推荐">#</a> 1.slack (推荐)</h3>
+<ul>
+<li>简洁</li>
+<li>可以集成 google 日历，github，jira</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://slack.com/get-started#/createnew">访问地址</a></p>
+<h2 id="任务管理"><a class="markdownIt-Anchor" href="#任务管理">#</a> 任务管理</h2>
+<h3 id="1jira推荐"><a class="markdownIt-Anchor" href="#1jira推荐">#</a> 1.jira（推荐）</h3>
+<ul>
+<li>创建任务，支持任务的工作流，使开发和运营团队能够高速进行协作，以便他们可以响应业务变更并快速提供服务体验</li>
+</ul>
+<p>tempo</p>
+<h3 id="2confluence-ˈkɒnfluəns"><a class="markdownIt-Anchor" href="#2confluence-ˈkɒnfluəns">#</a> 2.confluence[ ˈkɒnfluəns ]</h3>
+<p>站内 wiki<br>
+ 为您的项目增加包含产品需求、发行说明和文档的单一数据源的上下文</p>
+<h3 id="3trello"><a class="markdownIt-Anchor" href="#3trello">#</a> 3.Trello</h3>
+<p><a target="_blank" rel="noopener" href="https://trello.com">访问地址</a></p>
+<h3 id="4basecamp"><a class="markdownIt-Anchor" href="#4basecamp">#</a> 4.Basecamp</h3>
+<p><a target="_blank" rel="noopener" href="https://basecamp.com/">访问地址</a></p>
+<h3 id="5miro"><a class="markdownIt-Anchor" href="#5miro">#</a> 5.miro</h3>
+<p><strong>同事公司采用的是 jira + confluence 结合，这里推荐 jira 来进行任务的管理，在实际工作中会经常用到</strong></p>
+<h2 id="视频沟通过需求"><a class="markdownIt-Anchor" href="#视频沟通过需求">#</a> 视频沟通（过需求）</h2>
+<h3 id="1腾讯会议推荐"><a class="markdownIt-Anchor" href="#1腾讯会议推荐">#</a> 1. 腾讯会议（推荐）</h3>
+<p>腾讯会议其实就很方便，屏幕共享，来过需求</p>
+<h3 id="2google-meeting"><a class="markdownIt-Anchor" href="#2google-meeting">#</a> 2.google meeting</h3>
+<h3 id="3zoom"><a class="markdownIt-Anchor" href="#3zoom">#</a> 3.zoom</h3>
 
   </article>
 </div>
@@ -170,8 +181,8 @@
 
 <script>
   var disqus_config = function() {
-    this.page.url = "https://sai.show/2023/06/01/Go-%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E6%84%9F%E6%83%B3/";
-    this.page.identifier = 1685593222;
+    this.page.url = "https://sai.show/2023/07/29/%E8%BF%9C%E7%A8%8B%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F-%E8%BF%9C%E7%A8%8B%E5%A6%82%E4%BD%95%E5%8D%8F%E4%BD%9C/";
+    this.page.identifier = 1690608022;
   };
 
   (function() {
