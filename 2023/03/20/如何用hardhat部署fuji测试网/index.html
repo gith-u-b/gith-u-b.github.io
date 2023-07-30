@@ -24,7 +24,7 @@
   <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
 
-  <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="https://s10.aconvert.com/convert/p3r68-cdx67/at6dh-2hrh7-001.ico">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -62,6 +62,12 @@
         
         <li><a href="/tags">Tags</a></li>
         
+        
+        <li class="desktop-only"><a href="/links" >Links</a></li>
+        
+        
+          <li class="desktop-only"><a href="/about" >About</a></li>
+          
         
         <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
         
@@ -148,20 +154,20 @@
 <h2 id="hardhat方面"><a class="markdownIt-Anchor" href="#hardhat方面">#</a> hardhat 方面</h2>
 <h3 id="1创建npm项目"><a class="markdownIt-Anchor" href="#1创建npm项目">#</a> 1. 创建 npm 项目</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir hardhat_fuji_demo</span><br><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%911.png" alt="如何用hardhat部署fuji测试网1.png"></p>
+<p><img src="https://raw.githubusercontent.com/gith-u-b/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%911.png" alt="如何用hardhat部署fuji测试网1.png"></p>
 <h3 id="2npm安装hardhat"><a class="markdownIt-Anchor" href="#2npm安装hardhat">#</a> 2.npm 安装 hardhat</h3>
 <p>npm install --save-dev hardhat</p>
 <h3 id="3执行npx-hardhat"><a class="markdownIt-Anchor" href="#3执行npx-hardhat">#</a> 3. 执行 npx hardhat</h3>
 <p>选择：<br>
-<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%912.png" alt="如何用hardhat部署fuji测试网2.png"><br>
+<img src="https://raw.githubusercontent.com/gith-u-b/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%912.png" alt="如何用hardhat部署fuji测试网2.png"><br>
  <code>Create an advanced sample project that uses TypeScript</code> <br>
 =&gt; Create a TypeScript project(12.29)<br>
  其他选择默认</p>
 <p>效果如下：<br>
-<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%913.png" alt="如何用hardhat部署fuji测试网3.png"></p>
+<img src="https://raw.githubusercontent.com/gith-u-b/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%913.png" alt="如何用hardhat部署fuji测试网3.png"></p>
 <h3 id="3启动本地测试节点"><a class="markdownIt-Anchor" href="#3启动本地测试节点">#</a> 3. 启动本地测试节点</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npx hardhat node</span><br><span class="line"></span><br><span class="line">会生成20个供测试的account和private key</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%914.png" alt="如何用hardhat部署fuji测试网4.png"></p>
+<p><img src="https://raw.githubusercontent.com/gith-u-b/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%914.png" alt="如何用hardhat部署fuji测试网4.png"></p>
 <h3 id="4测试"><a class="markdownIt-Anchor" href="#4测试">#</a> 4. 测试</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @openzeppelin/contracts</span><br></pre></td></tr></table></figure>
 <p>1. 在 contracts 目录下创建 superToken 文件<br>
@@ -171,9 +177,9 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123; expect &#125; from &quot;chai&quot;;</span><br><span class="line">import &#123; ethers &#125; from &quot;hardhat&quot;;</span><br><span class="line">import &#123; Signer, BigNumber &#125; from &quot;ethers&quot;;</span><br><span class="line"></span><br><span class="line">describe(&quot;SuperToken&quot;, function () &#123;</span><br><span class="line">  it(&quot;Should return the new greeting once it&#x27;s changed&quot;, async function () &#123;</span><br><span class="line">    const SuperToken = await ethers.getContractFactory(&quot;SuperToken&quot;);</span><br><span class="line">    const sup = await SuperToken.deploy();</span><br><span class="line">    await sup.deployed();</span><br><span class="line"></span><br><span class="line">    let one: Signer, two: Signer, three: Signer, four: Signer, five: Signer;</span><br><span class="line">    let oneAddr: string, twoAddr: string, threeAddr: string, fourAddr: string, fiveAddr: string;</span><br><span class="line">    [one, two, three] = await ethers.getSigners();</span><br><span class="line">    [oneAddr, twoAddr, threeAddr] = await Promise.all([one, two, three].map((s) =&gt; s.getAddress()));</span><br><span class="line"></span><br><span class="line">    console.log(await sup.mint(oneAddr, &quot;one&quot;));</span><br><span class="line">    console.log(await sup.mint(twoAddr, &quot;two&quot;));</span><br><span class="line">    console.log(await sup.ownerOf(0));</span><br><span class="line">    console.log(await sup.ownerOf(1));</span><br><span class="line">    console.log(oneAddr);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p><code>npx hardhat test --network localhost test/index.ts</code> <br>
  <code>npx hardhat test --network localhost scripts/deploy.ts</code> <br>
-<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%915.png" alt="如何用hardhat部署fuji测试网5.png"></p>
+<img src="https://raw.githubusercontent.com/gith-u-b/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%915.png" alt="如何用hardhat部署fuji测试网5.png"></p>
 <p><code>npx hardhat test --network localhost test/supertoken.ts</code> <br>
-<img src="https://raw.githubusercontent.com/sai1024/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%916.png" alt="如何用hardhat部署fuji测试网6.png"></p>
+<img src="https://raw.githubusercontent.com/gith-u-b/resource_share/master/java/%E5%A6%82%E4%BD%95%E7%94%A8hardhat%E9%83%A8%E7%BD%B2fuji%E6%B5%8B%E8%AF%95%E7%BD%916.png" alt="如何用hardhat部署fuji测试网6.png"></p>
 <h2 id="部署"><a class="markdownIt-Anchor" href="#部署">#</a> 部署</h2>
 <p>npx hardhat run scripts/deploy.ts --network fuji</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Lock with 1 ETH and unlock timestamp 1703820977 deployed to 0xd2E73998A99BB3bf32823Eff6968a1732E5e97c5</span><br><span class="line"></span><br><span class="line">Lock with 1 ETH and unlock timestamp 1703821199 deployed to 0x1D9b332ADC215Dd6373257eab92D3B00e1066043</span><br></pre></td></tr></table></figure>
@@ -194,7 +200,7 @@
 
   (function() {
     var d = document, s = d.createElement('script');
-    s.src = 'https://sai1024.disqus.com/embed.js';
+    s.src = 'https://gith-u-b.disqus.com/embed.js';
     s.setAttribute('data-timestamp', +new Date());
     (d.head || d.body).appendChild(s);
   })();
@@ -216,7 +222,7 @@
       <li>© 2023 Sai</li>
       <li><a href="https://sai.show">Home</a></li>
       
-      <li><a target="_blank" rel="noopener" href="https://github.com/sai1024">Github</a></li>
+      <li><a target="_blank" rel="noopener" href="https://github.com/gith-u-b">Github</a></li>
       
     </ul>
     <div class="footer-theme-info">
