@@ -67,6 +67,23 @@ count += 1
 end
 number = number / 10
 end
+end
+
+return count
+end
+
+
+
+def countOnes(a, b)
+count = 0
+
+(a..b).each do |number|
+while number > 0
+if number % 10 == 1
+count += 1
+end
+number = number / 10
+end
 
 end
 
@@ -75,3 +92,6 @@ end
 
 
 # 二： 返回指定标签的文章
+select a.id, a.title, string_agg(t.name, ',') from articles a inner join tags t on a.id = t.article_id 
+where a.id in (select article_id from tags where t.name = 'AAA')
+group by a.id, a.title
