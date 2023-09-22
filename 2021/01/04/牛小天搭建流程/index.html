@@ -145,21 +145,21 @@
   <article class="post-content">
     <h1>牛小天搭建流程</h1>
     <p>起因：在被隔离的最后一周内，认识的一个朋友给我打电话，说我会做 app 不，想让我弄个 app，他说他有个朋友想做，报价 10W，然后给我微信发了一个二维码，我打开之后发现是个游戏，可以在线棋牌，我说这其实是微信 h5 页面，不用做 app，我研究下吧，然后我就开始找免费服务器做实验，因为我阿里云的服务器到期了，刚把后台跑起来，正在纠结微信服务号我没有的问题，那边说朋友很急，因为我不能承诺百分之百能弄好，我说那你让报价 10W 的那个人做吧，我这边自己研究研究就行了，回来我们自己玩。<br>
-我也查了一些资料，其实还有有灰色性质，我就全当研究了，趁着周六休息，我想写下来我搭建的流程和遇到的问题。把他当个研究技术的学习过程。因为我服务这两天就停了，因为免费服务器需要每五天往知乎发广告，我不想每周让我看我粉丝看我发广告，会掉粉的。。。</p>
+我也查了一些资料，其实还有有灰色性质，我就全当研究了，趁着周六休息，我想写下来我搭建的流程和遇到的问题。把他当个研究技术的学习过程。</p>
 <p><strong>在微信打开效果</strong><br>
-<img src="https://upload-images.jianshu.io/upload_images/1336098-3b283c0c7ad08337.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="我给自己加了9999张房卡"></p>
+<img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu001.png" alt="我给自己加了9999张房卡"></p>
 <p><strong>后台登陆界面</strong><br>
 因为我没有域名，所以我用的公网 ip，这里就不暴露地址啦。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/1336098-834c6b3dd563366b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="这个是登陆界面"><br>
-<img src="https://upload-images.jianshu.io/upload_images/1336098-0ae006a59da858a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="用户页面，可以查看注册用户的信息"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/1336098-72b4315fb8b534f1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="给特定用户赠送房卡"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/1336098-084e91fe9aaf4f4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="控制他下一次是什么牌"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/1336098-485981e86a3b36ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="编辑个人信息，可以让它透视玩家的牌"></p>
+<p><img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu002.png" alt="这个是登陆界面"></p>
+<p><img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu003.png" alt="用户页面，可以查看注册用户的信息"></p>
+<p><img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu004.png" alt="给特定用户赠送房卡"></p>
+<p><img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu005.png" alt="控制他下一次是什么牌"></p>
+<p><img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu006.png" alt="编辑个人信息，可以让它透视玩家的牌"></p>
 <p>看完之后可以看出这种线上棋牌性质的是不靠谱的，他可以控制发牌，可以让跟你玩的玩家拥有透视功能，你觉得自己是好牌，是管理员在控制你的输赢。</p>
 <p><strong>好，接下来聊搭建</strong></p>
 <h2 id="搭建过程"><a class="markdownIt-Anchor" href="#搭建过程">#</a> 搭建过程</h2>
 <p>1. 服务器安装系统选择<a href="%5Bhttps://www.bt.cn/">宝塔</a><br>
-<img src="https://upload-images.jianshu.io/upload_images/1336098-3c04b52f58f91f2c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="安装操作系统"><br>
+<img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu007.png" alt="安装操作系统"><br>
  2. 安装好之后，会提示 “<strong>CentOS 内置宝塔面板的系统，安装完毕后，您可以通过访问 http:// 你自己的 ip:8888 来进行初始化服务器</strong>”</p>
 <p>进去后会弹出安装软件明细:</p>
 <ul>
@@ -171,7 +171,7 @@
 <p>点击安装</p>
 <ol start="3">
 <li>把数据库文件中的 <code>nxt.sql</code>  用安装的 phpMyAdmin 进行导入操作<br>
-<img src="https://upload-images.jianshu.io/upload_images/1336098-32a0ce4fd7a9abe2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="把数据进行导入操作"></li>
+<img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu008.png" alt="把数据进行导入操作"></li>
 </ol>
 <p>注意：导入之前先进行创建数据库 <code>nxt</code></p>
 <p>4. 把代码导入服务器之后，进行修改配置文件的操作</p>
@@ -188,11 +188,11 @@
 <h2 id="遇到的问题和需要注意的地方"><a class="markdownIt-Anchor" href="#遇到的问题和需要注意的地方">#</a> 遇到的问题和需要注意的地方</h2>
 <p>1. 大厅进去之后，或者邀请人加入房间的地址，提示<strong>系统发生错误</strong><br>
 这种一般就是伪静态的问题，在宝塔后台左边菜单栏选择网站，在你添加的站点右边点击设置，点击伪静态 选择 thinkphp，配置如下：<br>
-<img src="https://upload-images.jianshu.io/upload_images/1336098-6871b068fbc15f75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="配置伪静态"></p>
+<img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu009.png" alt="配置伪静态"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location ^~ /jf/ &#123;  </span><br><span class="line">   rewrite  ^/jf/nl/niuxiaotian  /portal/index/room.html?room=$1  last;</span><br><span class="line">&#125;</span><br><span class="line">location / &#123;</span><br><span class="line">	if (!-e $request_filename)&#123;</span><br><span class="line">		rewrite  ^(.*)$  /index.php?s=$1  last;   break;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>2. 登录后台 <a target="_blank" rel="noopener" href="http://xn--eqrt2g">http:// 域名</a> (或者 ip)/admin，输入账号密码提示 “Not Found”<br>
  这一般是账号和密码的错误，一般是数据库没有配置好<br>
-<img src="https://upload-images.jianshu.io/upload_images/1336098-7a51876fb0233632.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据库信息"></p>
+<img src="https://first-forever-1258351296.cos.ap-beijing.myqcloud.com/book/niu/niu010.png" alt="数据库信息"></p>
 <p>3. 后台配置完公众号相关信息打开提示微信拦截或者打开是别人的公众号或者打开一直提示公众号配置错误信息，这是源码被人改了公众号转发登录，公众号转发登录的好处是一个公众号可以用到无数个台子，并且网站域名死了不用去公众号修改域名换域名很方便。<br>
 打开<strong> application/Common/Controller-&gt;HomebaseController.class.php</strong>, 找到这一句</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$baseurl=urlencode(&#x27;http://&#x27;.$_SERVER[&#x27;HTTP_HOST&#x27;].$_SERVER[&#x27;PHP_SELF&#x27;].&#x27;?&#x27;.$_SERVER[&#x27;QUERY_STRING&#x27;]);</span><br></pre></td></tr></table></figure>
