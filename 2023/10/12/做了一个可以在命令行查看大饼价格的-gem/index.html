@@ -8,12 +8,12 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>
-    远程的工作模式(远程如何协作) | Step by Step
+    做了一个可以在命令行查看大饼价格的 gem | Step by Step
   </title>
   <meta name="description" content="一步一步的">
   
   <meta name="keywords" content="
-  远程
+  ruby
   ">
   
   <meta name="author" content="Sai">
@@ -134,46 +134,53 @@
     <i class="fa fa-user-o"></i>
     Sai
 
-    <span class="post-date float-right" title="{{moment(1690608022000).format('MMM DD, YYYY, h:mm:ss A')}}">
+    <span class="post-date float-right" title="{{moment(1697096013000).format('MMM DD, YYYY, h:mm:ss A')}}">
       
           <i class="fa fa-pencil-square-o"></i>
       
-      {{moment(1690608022000).fromNow()}}
+      {{moment(1697096013000).fromNow()}}
     </span>
   </h3>
 
   <article class="post-content">
-    <h1>远程的工作模式(远程如何协作)</h1>
-    <h2 id="远程工作的前提"><a class="markdownIt-Anchor" href="#远程工作的前提">#</a> 远程工作的前提</h2>
-<p>相互信任，远程工作者需要在工作期间做到及时响应，不能发生 “给你发信息，一直没有人回” 的情况，可以有事情提前告知</p>
-<h2 id="沟通"><a class="markdownIt-Anchor" href="#沟通">#</a> 沟通</h2>
-<h3 id="1slack推荐"><a class="markdownIt-Anchor" href="#1slack推荐">#</a> 1.slack (推荐)</h3>
-<ul>
-<li>简洁</li>
-<li>可以集成 google 日历，github，jira</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://slack.com/get-started#/createnew">访问地址</a></p>
-<h2 id="任务管理"><a class="markdownIt-Anchor" href="#任务管理">#</a> 任务管理</h2>
-<h3 id="1jira推荐"><a class="markdownIt-Anchor" href="#1jira推荐">#</a> 1.jira（推荐）</h3>
-<ul>
-<li>创建任务，支持任务的工作流，使开发和运营团队能够高速进行协作，以便他们可以响应业务变更并快速提供服务体验</li>
-</ul>
-<p>tempo</p>
-<h3 id="2confluence-ˈkɒnfluəns"><a class="markdownIt-Anchor" href="#2confluence-ˈkɒnfluəns">#</a> 2.confluence[ ˈkɒnfluəns ]</h3>
-<p>站内 wiki<br>
- 为您的项目增加包含产品需求、发行说明和文档的单一数据源的上下文</p>
-<h3 id="3trello"><a class="markdownIt-Anchor" href="#3trello">#</a> 3.Trello</h3>
-<p><a target="_blank" rel="noopener" href="https://trello.com">访问地址</a></p>
-<h3 id="4basecamp"><a class="markdownIt-Anchor" href="#4basecamp">#</a> 4.Basecamp</h3>
-<p><a target="_blank" rel="noopener" href="https://basecamp.com/">访问地址</a></p>
-<h3 id="5miro"><a class="markdownIt-Anchor" href="#5miro">#</a> 5.miro</h3>
-<p><strong>同事公司采用的是 jira + confluence 结合，这里推荐 jira 来进行任务的管理，在实际工作中会经常用到</strong></p>
-<h2 id="视频沟通过需求"><a class="markdownIt-Anchor" href="#视频沟通过需求">#</a> 视频沟通（过需求）</h2>
-<h3 id="1腾讯会议推荐"><a class="markdownIt-Anchor" href="#1腾讯会议推荐">#</a> 1. 腾讯会议（推荐）</h3>
-<p>腾讯会议其实就很方便，屏幕共享，来过需求</p>
-<h3 id="2google-meeting"><a class="markdownIt-Anchor" href="#2google-meeting">#</a> 2.google meeting</h3>
-<h3 id="3zoom"><a class="markdownIt-Anchor" href="#3zoom">#</a> 3.zoom</h3>
-
+    <h1>做了一个可以在命令行查看大饼价格的 gem</h1>
+    <h2 id="前言"><a class="markdownIt-Anchor" href="#前言">#</a> 前言</h2>
+<p>大概 2 年前做过这个 gem，为了方便自己可以快速查看自己关注币的价格</p>
+<p>刚开始做的比较简单，就是在命令行中输入 <code>coin bnb</code>  (比如查询 bnb)，显示 bnb_usdt 的价格而已，最近比较关注币圈，自己也投入了一笔钱，感觉自己做的比较简单，在网上一搜发现这个功能前端做过类似的库，就把这个 gem 完善了下，在 ruby 社区分享下</p>
+<h2 id="先来演示下效果"><a class="markdownIt-Anchor" href="#先来演示下效果">#</a> 先来演示下效果</h2>
+<h3 id="命令行中输入coin默认显示前10名热度最高的币的信息"><a class="markdownIt-Anchor" href="#命令行中输入coin默认显示前10名热度最高的币的信息">#</a> 命令行中输入 <code>coin</code>  默认显示前 10 名热度最高的币的信息</h3>
+<p>$ coin<br>
+<img src="https://l.ruby-china.com/photo/ias/34cae525-a074-4f7a-9e60-b6e74a854a9a.png!large" alt=""></p>
+<h3 id="如果想自定义显示多少位比如这里显示20后面加-t"><a class="markdownIt-Anchor" href="#如果想自定义显示多少位比如这里显示20后面加-t">#</a> 如果想自定义显示多少位（比如这里显示 20），后面加 <code>-t</code></h3>
+<p>$ coin -t 20<br>
+<img src="https://l.ruby-china.com/photo/ias/5558060e-4374-42ca-80f0-bf42bbc759b3.png!large" alt=""></p>
+<h3 id="查询某一个币的价格"><a class="markdownIt-Anchor" href="#查询某一个币的价格">#</a> 查询某一个币的价格</h3>
+<p>$ coin eth</p>
+<p><img src="https://l.ruby-china.com/photo/ias/cdc823aa-65d4-43de-a725-7976d2a641ec.png!large" alt=""></p>
+<h3 id="以cli的方式来获取价格"><a class="markdownIt-Anchor" href="#以cli的方式来获取价格">#</a> 以 cli 的方式来获取价格</h3>
+<p>$ coin-cli</p>
+<p><img src="https://l.ruby-china.com/photo/ias/40bfb70a-557e-4784-96fa-46a9b1bc6834.png!large" alt=""></p>
+<p>备注：按 <code>ctrl+c</code>  来退出 cli</p>
+<h3 id="获取帮助命令"><a class="markdownIt-Anchor" href="#获取帮助命令">#</a> 获取帮助命令</h3>
+<p>$ coin -h<br>
+<img src="https://l.ruby-china.com/photo/ias/b3d9b23d-8d40-41fd-b832-737e14e66385.png!large" alt=""></p>
+<h3 id="安装"><a class="markdownIt-Anchor" href="#安装">#</a> 安装</h3>
+<p>比较简单，本地执行执行</p>
+<p>$ gem install blade_coin</p>
+<p>（默认拉取最新 1.0.1 版本，如果没有执行 <code>gem install blade_coin -v '1.0.1'</code> ）</p>
+<p>更多信息访问 github: <a target="_blank" rel="noopener" href="https://github.com/gith-u-b/blade_coin">https://github.com/gith-u-b/blade_coin</a></p>
+<h2 id="other"><a class="markdownIt-Anchor" href="#other">#</a> other</h2>
+<h3 id="测试gem"><a class="markdownIt-Anchor" href="#测试gem">#</a> 测试 gem</h3>
+<p>1. 本地修改好 gem 之后，首先卸载本地 gem</p>
+<p>$ gem uninstall blade_code</p>
+<p>2.buid 最新本地的代码</p>
+<p>$ gem build blade_coin.gemspec</p>
+<p>会生成最新的本地 gem，如：blade_coin-1.0.2.gem</p>
+<p>3. 安装生成的 gem<br>
+$ gem install blade_coin-1.0.2.gem</p>
+<p>4. 本地退出本地项目目录，回到上一层，来测试即可</p>
+<h3 id="推送最新tag"><a class="markdownIt-Anchor" href="#推送最新tag">#</a> 推送最新 tag</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.0.2 -f -m &quot;修复版本兼容问题&quot;</span><br><span class="line">git push origin v1.0.2</span><br></pre></td></tr></table></figure>
   </article>
 </div>
 
@@ -185,8 +192,8 @@
 
 <script>
   var disqus_config = function() {
-    this.page.url = "https://sai.show/2023/07/29/%E8%BF%9C%E7%A8%8B%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F-%E8%BF%9C%E7%A8%8B%E5%A6%82%E4%BD%95%E5%8D%8F%E4%BD%9C/";
-    this.page.identifier = 1690608022;
+    this.page.url = "https://sai.show/2023/10/12/%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%9F%A5%E7%9C%8B%E5%A4%A7%E9%A5%BC%E4%BB%B7%E6%A0%BC%E7%9A%84-gem/";
+    this.page.identifier = 1697096013;
   };
 
   (function() {
