@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    如何用hardhat部署fuji测试网 | Step by Step
+  </title>
+  <meta name="description" content="一步一步的">
+  
+  <meta name="keywords" content="
+  java
+  ">
+  
+  <meta name="author" content="Sai">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.sai.show/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        
+          <li class="desktop-only"><a href="/about" >About</a></li>
+          
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://avatars.githubusercontent.com/u/56356960?s=400"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 20 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 8 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 8 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Step by Step</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sai
+
+    <span class="post-date float-right" title="{{moment(1679730348000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1679730348000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>如何用hardhat部署fuji测试网</h1>
+    <p>本地消息队列：我们在下载好的 activemq 文件夹下的 config 文件夹下，找到 activemq.bat 文件运行，浏览器访问 <a target="_blank" rel="noopener" href="http://activemq-host:8161/admin%E3%80%82">http://activemq-host:8161/admin。</a></p>
+<p>activemq-host 是启动机器的 ip 地址，8161 是 activemq 的默认端口号，默认用户名和密码是 admin。会进入一下界面：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1336098-8844257fe191ef98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p>当然，这是本地的消息队列，访问，我们启动之后也可以通过 jdk 自带的 jconsole 来监控。这里重点介绍怎样远程监控 activemq。</p>
+<p>远程监控 activemq：这里涉及到 JMX 的概念，网上我也搜了很多，我也看的不是很明白，这里大家知道由 Java 开发的程序，一般都是 jmx 来监控就可以了，当然，activemq 也是通过 Jmx 来监控的。这里首先我们来配置一些东西。</p>
+<p>1. 在你下载 activemq 文件夹下的 config 中，找到 activemq.xml，在 broker 节点增加 <code>useJmx=&quot;true&quot;</code> <br>
+<img src="http://upload-images.jianshu.io/upload_images/1336098-99a0c15e9b9a2046.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p>2. 在 managementContext 节点更改成下面的截图的样子（这里我直接截图了，增加的东西不多，我就不把能复制的放进来了，自己敲敲，熟悉一下～）<br>
+<img src="http://upload-images.jianshu.io/upload_images/1336098-698d120a8759b988.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p>3. 在你 activemq 文件夹下的 bin 找到 activemq（${active_home}/bin/activemq），找到下面截图中出出现的代码，应该是注释掉的，解除注释就行了，我下载的版本是 5.13.4，有的没有下面的代码，不知道是什么原因，这个弄明白之后，会再更新。<br>
+代码版 (这个可以直接粘贴过去)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ACTIVEMQ_SUNJMX_START=&quot;-Dcom.sun.management.jmxremote.port=11099&quot;</span><br><span class="line">ACTIVEMQ_SUNJMX_START=&quot;$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.password.file=$&#123;ACTIVEMQ_CONF&#125;/jmx.password&quot;</span><br><span class="line">ACTIVEMQ_SUNJMX_START=&quot;$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.access.file=$&#123;ACTIVEMQ_CONF&#125;/jmx.access&quot;</span><br><span class="line">ACTIVEMQ_SUNJMX_START=&quot;$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.ssl=false&quot;</span><br></pre></td></tr></table></figure>
+<p>截图版：<br>
+<img src="http://upload-images.jianshu.io/upload_images/1336098-0dbf63ed07429917.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p>4. 在 Linux 上进入 ${active_home}/bin 中执行 <code>chmod 655 activemq</code>  用来获取 active 的权限，我们解压 activemq 之后，发现在 bin 的 activemq 是灰色，不能正常启动就执行 <code>activemq restart</code>  这条命令。执行完这条命令之后，会变成绿色。<br>
+<img src="http://upload-images.jianshu.io/upload_images/1336098-3efed62c714d7baf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p>然后执行 <code>chmod 400 $&#123;activemq_home&#125;/conf/jmx</code> .   意思是设置当前用户只读，其他用户没有权限。</p>
+<p>接下来在 ${activemq_home}/bin 下执行 <code>activemq start</code>  或者 <code>activemq restart</code> ，一般在前面加 sudo，一般用户没权限。<br>
+activemq stop 来停止或者用 ps 显示当前运行的 activemq 的线程号，然后 kill 即可。</p>
+<p>好了，接下来，我们来用 jdk 自带的 jconsole 来检测一下。<br>
+<img src="http://upload-images.jianshu.io/upload_images/1336098-183fdf0a87bfe18b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p>默认用户名：admin<br>
+ 密码：activemq</p>
+<p><strong>这里有可能出现还远程不上的情况：这里有我尝试了下有两种解决办法</strong></p>
+<ul>
+<li>关闭远程服务器上的防火墙 (当然，这个不推荐，容易被黑客攻击)</li>
+<li>修改 hosts 文件，添加远程实际的 Ip 地址</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/1336098-4b175abdd26180fb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"><br>
+ 当然，我们在实际项目中可能不单单登录 activemq 的 web console 或者 jconsole 来实现监控，我在项目中就是用 java 程序来实现跟 web console 一样的页面展示的形式。接下来引用我实际项目中的代码。</p>
+<p><strong>controller</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">String surl = Constant.MQ_URL;  </span><br><span class="line">  String userName = Constant.MQ_USERNAME;  </span><br><span class="line">  String userPwd = Constant.MQ_USERPWD;  </span><br><span class="line">  Map&lt;String, String[]&gt; env = new HashMap&lt;&gt;();  </span><br><span class="line">  String[] credentials = &#123;userName, userPwd&#125;;  </span><br><span class="line">  env.put(JMXConnector.CREDENTIALS, credentials);  </span><br><span class="line">  JMXServiceURL url = new JMXServiceURL(surl);    </span><br><span class="line">  JMXConnector jmxc = JMXConnectorFactory.connect(url, env);  </span><br><span class="line">  // JMXConnector jmxc = JMXConnectorFactory.connect(url, null);    </span><br><span class="line">  MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();    </span><br><span class="line">  ObjectName mbeanName = new ObjectName(&quot;org.apache.activemq:brokerName=localhost,type=Broker&quot;);  </span><br><span class="line">  //MBeanInfo info = mbsc.getMBeanInfo(mbeanName);    </span><br><span class="line">  BrokerViewMBean mbean =(BrokerViewMBean) MBeanServerInvocationHandler.newProxyInstance(mbsc, mbeanName, BrokerViewMBean.class, true);  </span><br><span class="line">  List&lt;MqModel&gt; mqList = new ArrayList&lt;MqModel&gt;();  </span><br><span class="line">  OrganizationService organizationService = (OrganizationService) SpringBeanUtil.getBean(&quot;organizationService&quot;);  </span><br><span class="line">  for (ObjectName na : mbean.getQueues()) &#123;    </span><br><span class="line">            QueueViewMBean queueBean = (QueueViewMBean)MBeanServerInvocationHandler.newProxyInstance(mbsc, na, QueueViewMBean.class, true);  </span><br><span class="line">        MqModel mq = new MqModel();  </span><br><span class="line">        Organization organ = organizationService.getOrganization(queueBean.getName());  </span><br><span class="line">        if(organ!=null)&#123;  </span><br><span class="line">            mq.setName(organ.getOrgName());  </span><br><span class="line">        &#125;else&#123;  </span><br><span class="line">            mq.setName(queueBean.getName());  </span><br><span class="line">                      </span><br><span class="line">        &#125;  </span><br><span class="line">        mq.setQueueSize(queueBean.getQueueSize());  </span><br><span class="line">        mq.setConsumerCount(queueBean.getConsumerCount());  </span><br><span class="line">        mq.setDequeueCount(queueBean.getDequeueCount());  </span><br><span class="line">        mq.setEnqueueCount(queueBean.getEnqueueCount());  </span><br><span class="line">        queueBean.getEnqueueCount();  </span><br><span class="line">        mqList.add(mq);  </span><br><span class="line">          </span><br><span class="line">        &#125;  </span><br></pre></td></tr></table></figure>
+<p>上面的代码中获取实际数据通过 queueBean.__来获取，这里我用一个 model 来接收了。下面会引入 model 的代码</p>
+<p><strong>Constant:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static final String MQ_URL = properties.getProperty(&quot;mq.url&quot;);//获取mq远程链接地址   </span><br><span class="line">  public static final String MQ_USERNAME = properties.getProperty(&quot;mq.userName&quot;);//mq用户名   </span><br><span class="line">  public static final String MQ_USERPWD = properties.getProperty(&quot;mq.userPwd&quot;);//mq密码  </span><br></pre></td></tr></table></figure>
+<p><strong>Model:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line"> * 这里自定义一个Model来接收队列的信息 </span><br><span class="line"> * @author LY </span><br><span class="line"> * @date 2016-08-10 11:11 </span><br><span class="line"> */  </span><br><span class="line">public class MqModel &#123;  </span><br><span class="line">    private String name;//队列的名称  </span><br><span class="line">    private Long queueSize;//队列中剩余的消息数  </span><br><span class="line">    private Long consumerCount;//消费者数  </span><br><span class="line">    private Long enqueueCount;//进入队列的总数量  </span><br><span class="line">    private Long dequeueCount;//出队列的数量  </span><br><span class="line">  </span><br><span class="line">    public String getName() &#123;  </span><br><span class="line">        return name;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public void setName(String name) &#123;  </span><br><span class="line">        this.name = name;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public Long getQueueSize() &#123;  </span><br><span class="line">        return queueSize;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public void setQueueSize(Long queueSize) &#123;  </span><br><span class="line">        this.queueSize = queueSize;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public Long getConsumerCount() &#123;  </span><br><span class="line">        return consumerCount;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public void setConsumerCount(Long consumerCount) &#123;  </span><br><span class="line">        this.consumerCount = consumerCount;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public Long getDequeueCount() &#123;  </span><br><span class="line">        return dequeueCount;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public void setDequeueCount(Long dequeueCount) &#123;  </span><br><span class="line">        this.dequeueCount = dequeueCount;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public Long getEnqueueCount() &#123;  </span><br><span class="line">        return enqueueCount;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public void setEnqueueCount(Long enqueueCount) &#123;  </span><br><span class="line">        this.enqueueCount = enqueueCount;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p><strong>application.properties:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#消息队列服务配置  </span><br><span class="line">my.url = service:jmx:rmi:///jndi/rmi://198.9.4.167:11099/jmxrmi</span><br><span class="line">mq.userName = admin  </span><br><span class="line">mq.userPwd = activemq </span><br></pre></td></tr></table></figure>
+<p><strong>最后，说下我遇到的问题：</strong><br>
+在刚接到这个需求的时候，我搜了很多，把 activemq 的远程配置第一步完成之后，发现用代码在 java 程序中控制台总是报权限的错误，不知道为什么，配置也配置好了，后来在 stackoverflow 看到其他程序猿也遇到这个问题，我看他们怎么实现，修改了下我的代码，就可以了。controller 注释的部分是我以前的代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String[]&gt; env = new HashMap&lt;&gt;();  </span><br><span class="line">String[] credentials = &#123;userName, userPwd&#125;;  </span><br><span class="line">env.put(JMXConnector.CREDENTIALS, credentials);  </span><br></pre></td></tr></table></figure>
+<p>我发现必须把 activemq 远程的用户名和密码放在 map 才可以～～～～</p>
+
+  </article>
+</div>
+
+
+    
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sai.show/2023/03/25/JMX%E8%BF%9C%E7%A8%8B%E7%9B%91%E6%8E%A7ActiveMQ%E8%AE%BE%E7%BD%AE/";
+    this.page.identifier = 1679730348;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://gith-u-b.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://sai.show" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2023 Sai</li>
+      <li><a href="https://sai.show">Home</a></li>
+      
+      <li><a target="_blank" rel="noopener" href="https://github.com/gith-u-b">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Author
+      by <a target="_blank" rel="noopener" href="//github.com/sabrinaluo">Sai</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":2,"width":250,"height":500,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
