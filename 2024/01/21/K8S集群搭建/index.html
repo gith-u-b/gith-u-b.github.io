@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    K8S集群搭建 | Step by Step
+  </title>
+  <meta name="description" content="一步一步的">
+  
+  <meta name="keywords" content="
+  部署
+  ">
+  
+  <meta name="author" content="Sai">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.sai.show/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        
+          <li class="desktop-only"><a href="/about" >About</a></li>
+          
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://avatars.githubusercontent.com/u/56356960?s=400"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 21 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 8 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 8 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Step by Step</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sai
+
+    <span class="post-date float-right" title="{{moment(1705841148000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1705841148000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>K8S集群搭建</h1>
+    <h2 id="part1-规划"><a class="markdownIt-Anchor" href="#part1-规划">#</a> PART1. 规划</h2>
+<h3 id="11-节点规划"><a class="markdownIt-Anchor" href="#11-节点规划">#</a> 1.1 节点规划</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">IP 地址</th>
+<th style="text-align:center">主机名</th>
+<th style="text-align:center">角色</th>
+<th style="text-align:center">配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">192.168.1.56</td>
+<td style="text-align:center">longinus-master-1</td>
+<td style="text-align:center">Master</td>
+<td style="text-align:center">2C 4G 20G</td>
+</tr>
+<tr>
+<td style="text-align:center">192.168.1.57</td>
+<td style="text-align:center">longinus-node-1</td>
+<td style="text-align:center">Worker</td>
+<td style="text-align:center">4C 8G 20G</td>
+</tr>
+<tr>
+<td style="text-align:center">192.168.1.58</td>
+<td style="text-align:center">longinus-node-2</td>
+<td style="text-align:center">Worker</td>
+<td style="text-align:center">4C 8G 20G</td>
+</tr>
+<tr>
+<td style="text-align:center">192.168.1.59</td>
+<td style="text-align:center">longinus-node-3</td>
+<td style="text-align:center">Worker</td>
+<td style="text-align:center">4C 8G 20G</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-软件版本规划"><a class="markdownIt-Anchor" href="#12-软件版本规划">#</a> 1.2 软件版本规划</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">软件包</th>
+<th style="text-align:center">版本</th>
+<th style="text-align:center">安装性质</th>
+<th style="text-align:center">获取渠道</th>
+<th style="text-align:center">贡献者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">docker-ce</td>
+<td style="text-align:center">24.0.7</td>
+<td style="text-align:center">dub</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">docker</td>
+</tr>
+<tr>
+<td style="text-align:center">docker-ce-cli</td>
+<td style="text-align:center">24.0.7</td>
+<td style="text-align:center">dub</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">docker</td>
+</tr>
+<tr>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="http://containerd.io">containerd.io</a></td>
+<td style="text-align:center">1.6.26</td>
+<td style="text-align:center">dub</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">docker</td>
+</tr>
+<tr>
+<td style="text-align:center">kubelet</td>
+<td style="text-align:center">1.28.2</td>
+<td style="text-align:center">dub</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">kubeadm</td>
+<td style="text-align:center">1.28.2</td>
+<td style="text-align:center">dub</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">kubectl</td>
+<td style="text-align:center">1.28.2</td>
+<td style="text-align:center">dub</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">kube-apiserver</td>
+<td style="text-align:center">1.28.2</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">kube-controller-manager</td>
+<td style="text-align:center">1.28.2</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">kube-scheduler</td>
+<td style="text-align:center">1.28.2</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">kube-proxy</td>
+<td style="text-align:center">1.28.2</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">pause</td>
+<td style="text-align:center">3.9</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">kubernetes</td>
+</tr>
+<tr>
+<td style="text-align:center">coredns</td>
+<td style="text-align:center">1.10.1</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">coredns</td>
+</tr>
+<tr>
+<td style="text-align:center">etcd</td>
+<td style="text-align:center">3.5.9-0</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">阿里云</td>
+<td style="text-align:center">coreos</td>
+</tr>
+<tr>
+<td style="text-align:center">flannel</td>
+<td style="text-align:center">cniVersion 0.3.1</td>
+<td style="text-align:center">pod</td>
+<td style="text-align:center">github</td>
+<td style="text-align:center">coreos</td>
+</tr>
+</tbody>
+</table>
+<h2 id="13-安装规划"><a class="markdownIt-Anchor" href="#13-安装规划">#</a> 1.3 安装规划</h2>
+<h3 id="131-容器选择"><a class="markdownIt-Anchor" href="#131-容器选择">#</a> 1.3.1 容器选择</h3>
+<p>各节点都安装 <code>docker-ce</code> 、 <code>docker-ce-cli</code> 、 <code>containerd.io</code> , 使用 <code>Containerd</code>  作为容器运行时，和 <code>kubelet</code>  交互</p>
+<p>Cgroup 管理器，k8s 默认是 systemd, 需要将 Containerd 的 Cgroup 管理器也修改为 systemd (默认是 cgroupfs)</p>
+<h3 id="132-cni网络插件"><a class="markdownIt-Anchor" href="#132-cni网络插件">#</a> 1.3.2 CNI 网络插件</h3>
+<p>使用谷歌嫡系，CoreOS 提供的 flannel 作为网络插件</p>
+<h3 id="133-安装步骤"><a class="markdownIt-Anchor" href="#133-安装步骤">#</a> 1.3.3 安装步骤</h3>
+<p>各节点都安装 <code>docker-ce</code> 、 <code>docker-ce-cli</code> 、 <code>containerd.io</code>  软件包，启动 <code>docker.socket</code> 、 <code>docker.service</code> 、 <code>containerd.service</code>  服务</p>
+<p>各节点都安装 <code>kubelet</code> 、 <code>kubeadm</code> 、 <code>kubectl</code>  软件包，都启动 <code>kubelet.service</code>  服务</p>
+<p><code>longinus-master-1</code>  节点使用 <code>kubeadm</code>  创建集群，且 <code>longinus-master-1</code>  节点作为 master 节点；集群创建后马上安装 flannel 建立私网</p>
+<p>集群创建后，将 <code>longinus-node-1</code> 、 <code>longinus-node-2</code> 、 <code>longinus-node-3</code>  节点加入集群作为 worker 节点</p>
+<p>运行一个比 helloworld 稍微复杂一些的 demo, 验证应用 pod 可以启动并提供服务</p>
+<h2 id="part2-操作系统准备工作"><a class="markdownIt-Anchor" href="#part2-操作系统准备工作">#</a> PART2. 操作系统准备工作</h2>
+<h3 id="21-ubuntu前置检查"><a class="markdownIt-Anchor" href="#21-ubuntu前置检查">#</a> 2.1 ubuntu 前置检查</h3>
+<h4 id="211-关闭ufw"><a class="markdownIt-Anchor" href="#211-关闭ufw">#</a> 2.1.1 关闭 ufw</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# ufw status</span><br><span class="line">Status: inactive</span><br></pre></td></tr></table></figure>
+<h4 id="212-时钟同步"><a class="markdownIt-Anchor" href="#212-时钟同步">#</a> 2.1.2 时钟同步</h4>
+<ul>
+<li>调整时区</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# dpkg-reconfigure tzdata</span><br></pre></td></tr></table></figure>
+<p>选 <code>Asia</code> , 再选 <code>Shanghai</code>  即可</p>
+<ul>
+<li>确认时钟同步</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# timedatectl status</span><br><span class="line">               Local time: Tue 2024-01-16 09:44:38 CST</span><br><span class="line">           Universal time: Tue 2024-01-16 01:44:38 UTC</span><br><span class="line">                 RTC time: Tue 2024-01-16 01:44:37</span><br><span class="line">                Time zone: Asia/Shanghai (CST, +0800)</span><br><span class="line">System clock synchronized: yes</span><br><span class="line">              NTP service: active</span><br><span class="line">          RTC in local TZ: no</span><br></pre></td></tr></table></figure>
+<p><code>System clock synchronized: yes</code>  即为开启时钟同步服务</p>
+<h4 id="213-配置apt主源"><a class="markdownIt-Anchor" href="#213-配置apt主源">#</a> 2.1.3 配置 apt 主源</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-node-2:~# apt update</span><br><span class="line">Hit:1 http://us.archive.ubuntu.com/ubuntu jammy InRelease</span><br><span class="line">Hit:2 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease</span><br><span class="line">Hit:3 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease</span><br><span class="line">Hit:4 http://us.archive.ubuntu.com/ubuntu jammy-security InRelease</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree... Done</span><br><span class="line">Reading state information... Done</span><br><span class="line">All packages are up to date.</span><br></pre></td></tr></table></figure>
+<h4 id="214-加载br_netfilter模块"><a class="markdownIt-Anchor" href="#214-加载br_netfilter模块">#</a> 2.1.4 加载 <code>br_netfilter</code>  模块</h4>
+<ul>
+<li>加载 <code>br_netfilter</code>  模块</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# modprobe br_netfilter</span><br><span class="line">root@longinus-master-1:~# echo 1 | sudo tee /proc/sys/net/bridge/bridge-nf-call-iptables</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# lsmod|grep br_netfilt</span><br><span class="line">br_netfilter           32768  0</span><br><span class="line">bridge                307200  1 br_netfilter</span><br></pre></td></tr></table></figure>
+<h4 id="215-启用ip转发"><a class="markdownIt-Anchor" href="#215-启用ip转发">#</a> 2.1.5 启用 IP 转发</h4>
+<ul>
+<li>启用 IP 转发</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# cat /proc/sys/net/ipv4/ip_forward</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<h4 id="216-启用overlay模块"><a class="markdownIt-Anchor" href="#216-启用overlay模块">#</a> 2.1.6 启用 overlay 模块</h4>
+<ul>
+<li>启用</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# modprobe overlay</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置模块在开机启动时加载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# vim /etc/modules-load.d/modules.conf</span><br></pre></td></tr></table></figure>
+<p>在该文件中添加一行，其内容为 <code>overlay</code></p>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# lsmod | grep overlay</span><br><span class="line">overlay               151552  0</span><br></pre></td></tr></table></figure>
+<h4 id="217-安装ipvsadm和ipset"><a class="markdownIt-Anchor" href="#217-安装ipvsadm和ipset">#</a> 2.1.7 安装 ipvsadm 和 ipset</h4>
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# apt install -y ipset ipvsadm</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# dpkg -l ipset ipvsadm</span><br><span class="line">Desired=Unknown/Install/Remove/Purge/Hold</span><br><span class="line">| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend</span><br><span class="line">|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)</span><br><span class="line">||/ Name           Version        Architecture Description</span><br><span class="line">+++-==============-==============-============-================================&gt;</span><br><span class="line">ii  ipset          7.15-1build1   amd64        administration tool for kernel I&gt;</span><br><span class="line">ii  ipvsadm        1:1.31-1build2 amd64        Linux Virtual Server support pro&gt;</span><br></pre></td></tr></table></figure>
+<p>注意：此处的 <code>ii</code>  表示安装成功</p>
+<h3 id="22-关闭swap"><a class="markdownIt-Anchor" href="#22-关闭swap">#</a> 2.2 关闭 swap</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# swapoff -a</span><br><span class="line">root@longinus-master-1:~# vim /etc/fstab </span><br><span class="line">root@longinus-master-1:~# swapon --show</span><br><span class="line">root@longinus-master-1:~# </span><br></pre></td></tr></table></figure>
+<p>在 <code>/etc/fstab</code>  中注释掉带有 <code>swap</code>  的行即可</p>
+<p>正确结果应为执行 <code>swapon --show</code>  命令后无任何返回结果</p>
+<h3 id="23-配置docker和k8s的apt源"><a class="markdownIt-Anchor" href="#23-配置docker和k8s的apt源">#</a> 2.3 配置 docker 和 k8s 的 apt 源</h3>
+<h4 id="231-配置docker的apt源"><a class="markdownIt-Anchor" href="#231-配置docker的apt源">#</a> 2.3.1 配置 docker 的 apt 源</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<p>这一步会有个 Warning 级别的错误，正常现象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;</span><br></pre></td></tr></table></figure>
+<p>这一步需要按个回车</p>
+<h4 id="232-配置kubernetes的apt源"><a class="markdownIt-Anchor" href="#232-配置kubernetes的apt源">#</a> 2.3.2 配置 kubernetes 的 apt 源</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# add-apt-repository &quot;deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="24-绑定host表"><a class="markdownIt-Anchor" href="#24-绑定host表">#</a> 2.4 绑定 host 表</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# vim /etc/hosts</span><br><span class="line">root@longinus-master-1:~# cat /etc/hosts</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 localhost</span><br><span class="line">127.0.1.1 template-1</span><br><span class="line"></span><br><span class="line"># The following lines are desirable for IPv6 capable hosts</span><br><span class="line">::1     ip6-localhost ip6-loopback</span><br><span class="line">fe00::0 ip6-localnet</span><br><span class="line">ff00::0 ip6-mcastprefix</span><br><span class="line">ff02::1 ip6-allnodes</span><br><span class="line">ff02::2 ip6-allrouters</span><br><span class="line"></span><br><span class="line"># master1节点公网IP</span><br><span class="line">192.168.1.56 k8s-master01.longinus.com  k8s-master01.longinus kubeapi.longinus.com</span><br><span class="line"></span><br><span class="line"># worker1节点公网IP</span><br><span class="line">192.168.1.57 k8s-node01.longinus.com k8s-node01.longinus</span><br><span class="line"></span><br><span class="line"># worker2节点公网IP</span><br><span class="line">192.168.1.58 k8s-nodeginus.com k8s-node02.longinus</span><br><span class="line"></span><br><span class="line"># worker3节点公网IP</span><br><span class="line">192.168.1.59 k8s-node03.longinus.com k8s-node03.longinus</span><br></pre></td></tr></table></figure>
+<h2 id="part3-安装docker"><a class="markdownIt-Anchor" href="#part3-安装docker">#</a> PART3. 安装 docker</h2>
+<h3 id="31-安装docker"><a class="markdownIt-Anchor" href="#31-安装docker">#</a> 3.1 安装 docker</h3>
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# apt install -y docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# apt list --installed | grep -i -E &#x27;docker|containerd&#x27;</span><br><span class="line"></span><br><span class="line">WARNING: apt does not have a stable CLI interface. Use with caution in scripts.</span><br><span class="line"></span><br><span class="line">containerd.io/jammy,now 1.6.27-1 amd64 [installed]</span><br><span class="line">docker-buildx-plugin/jammy,now 0.11.2-1~ubuntu.22.04~jammy amd64 [installed,automatic]</span><br><span class="line">docker-ce-cli/jammy,now 5:24.0.7-1~ubuntu.22.04~jammy amd64 [installed]</span><br><span class="line">docker-ce-rootless-extras/jammy,now 5:24.0.7-1~ubuntu.22.04~jammy amd64 [installed,automatic]</span><br><span class="line">docker-ce/jammy,now 5:24.0.7-1~ubuntu.22.04~jammy amd64 [installed]</span><br><span class="line">docker-compose-plugin/jammy,now 2.21.0-1~ubuntu.22.04~jammy amd64 [installed,automatic]</span><br></pre></td></tr></table></figure>
+<p>这里有个警告没关系</p>
+<h3 id="32-启动docker相关服务"><a class="markdownIt-Anchor" href="#32-启动docker相关服务">#</a> 3.2 启动 docker 相关服务</h3>
+<h4 id="321-验证是否开机自启"><a class="markdownIt-Anchor" href="#321-验证是否开机自启">#</a> 3.2.1 验证是否开机自启</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# systemctl list-unit-files | grep -E &#x27;docker|containerd&#x27;</span><br><span class="line">containerd.service                         enabled         enabled</span><br><span class="line">docker.service                             enabled         enabled</span><br><span class="line">docker.socket                              enabled         enabled</span><br></pre></td></tr></table></figure>
+<h4 id="322-验证服务是否启动"><a class="markdownIt-Anchor" href="#322-验证服务是否启动">#</a> 3.2.2 验证服务是否启动</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# systemctl status containerd.service</span><br><span class="line">root@longinus-master-1:~# systemctl status docker.service</span><br><span class="line">root@longinus-master-1:~# systemctl status docker.socket</span><br></pre></td></tr></table></figure>
+<p>3 个服务应该都是 running 状态</p>
+<h4 id="323-查看docker版本"><a class="markdownIt-Anchor" href="#323-查看docker版本">#</a> 3.2.3 查看 docker 版本</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# docker version</span><br></pre></td></tr></table></figure>
+<h3 id="33-配置containerd"><a class="markdownIt-Anchor" href="#33-配置containerd">#</a> 3.3 配置 containerd</h3>
+<h4 id="331-备份原配置并使用默认配置替换配置文件"><a class="markdownIt-Anchor" href="#331-备份原配置并使用默认配置替换配置文件">#</a> 3.3.1 备份原配置并使用默认配置替换配置文件</h4>
+<ul>
+<li>备份原配置</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# cp /etc/containerd/config.toml /etc/containerd/config.toml.ori</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用默认配置替换配置文件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# containerd config default &gt; /etc/containerd/config.toml</span><br></pre></td></tr></table></figure>
+<h4 id="332-设置containerd的cgroup设为systemd"><a class="markdownIt-Anchor" href="#332-设置containerd的cgroup设为systemd">#</a> 3.3.2 设置 Containerd 的 Cgroup 设为 systemd</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# vim /etc/containerd/config.toml</span><br></pre></td></tr></table></figure>
+<p>第 125 行:</p>
+<p>原文: <code>SystemdCgroup = false</code></p>
+<p>修改为: <code>SystemdCgroup = true</code></p>
+<h4 id="333-pause镜像路径改为国内源"><a class="markdownIt-Anchor" href="#333-pause镜像路径改为国内源">#</a> 3.3.3 pause 镜像路径改为国内源</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# vim /etc/containerd/config.toml</span><br></pre></td></tr></table></figure>
+<p>第 61 行:</p>
+<p>原文: <code>sandbox_image = &quot;registry.k8s.io/pause:3.6&quot;</code></p>
+<p>修改为: <code>sandbox_image = &quot;registry.aliyuncs.com/google_containers/pause:3.9&quot;</code></p>
+<h4 id="334-重启containerd并查看服务状态"><a class="markdownIt-Anchor" href="#334-重启containerd并查看服务状态">#</a> 3.3.4 重启 containerd 并查看服务状态</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# systemctl restart containerd.service</span><br><span class="line">root@longinus-master-1:~# systemctl status containerd.service</span><br></pre></td></tr></table></figure>
+<h2 id="part4-安装kubernetes"><a class="markdownIt-Anchor" href="#part4-安装kubernetes">#</a> PART4. 安装 Kubernetes</h2>
+<h3 id="41-安装kubernetes软件包"><a class="markdownIt-Anchor" href="#41-安装kubernetes软件包">#</a> 4.1 安装 Kubernetes 软件包</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# apt install -y kubelet kubeadm kubectl</span><br></pre></td></tr></table></figure>
+<p>注：这一步如果遇到错误</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E: Unable to locate package kubelet</span><br><span class="line">E: Unable to locate package kubeadm</span><br><span class="line">E: Unable to locate package kubectl</span><br></pre></td></tr></table></figure>
+<p>则重新执行 2.3.2 小节，然后执行 <code>apt-get update</code>  即可</p>
+<h3 id="42-确认kubelet服务状态"><a class="markdownIt-Anchor" href="#42-确认kubelet服务状态">#</a> 4.2 确认 kubelet 服务状态</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# systemctl status kubelet</span><br><span class="line">● kubelet.service - kubelet: The Kubernetes Node Agent</span><br><span class="line">     Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor prese&gt;</span><br><span class="line">    Drop-In: /etc/systemd/system/kubelet.service.d</span><br><span class="line">             └─10-kubeadm.conf</span><br><span class="line">     Active: activating (auto-restart) (Result: exit-code) since Tue 2024-01-16&gt;</span><br><span class="line">       Docs: https://kubernetes.io/docs/home/</span><br><span class="line">    Process: 7108 ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_&gt;</span><br><span class="line">   Main PID: 7108 (code=exited, status=1/FAILURE)</span><br><span class="line">        CPU: 61ms</span><br><span class="line"></span><br><span class="line">Jan 16 11:02:01 longinus-master-1 systemd[1]: kubelet.service: Main process exi&gt;</span><br><span class="line">Jan 16 11:02:01 longinus-master-1 systemd[1]: kubelet.service: Failed with resu&gt;</span><br><span class="line">lines 1-12/12 (END)...skipping...</span><br><span class="line">● kubelet.service - kubelet: The Kubernetes Node Agent</span><br><span class="line">     Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor preset: enabled)</span><br><span class="line">    Drop-In: /etc/systemd/system/kubelet.service.d</span><br><span class="line">             └─10-kubeadm.conf</span><br><span class="line">     Active: activating (auto-restart) (Result: exit-code) since Tue 2024-01-16 11:02:01 CST; 1s ago</span><br><span class="line">       Docs: https://kubernetes.io/docs/home/</span><br><span class="line">    Process: 7108 ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS (code=exited, status=1/FAILURE)</span><br><span class="line">   Main PID: 7108 (code=exited, status=1/FAILURE)</span><br><span class="line">        CPU: 61ms</span><br><span class="line"></span><br><span class="line">Jan 16 11:02:01 longinus-master-1 systemd[1]: kubelet.service: Main process exited, code=exited, status=1/FAILURE</span><br><span class="line">Jan 16 11:02:01 longinus-master-1 systemd[1]: kubelet.service: Failed with result &#x27;exit-code&#x27;.</span><br></pre></td></tr></table></figure>
+<p>可以看到此时 kubelet 状态为 loaded. 这是正常的。因为 kubelet 服务成功启动的先决条件是需要 kubelet 的配置文件，所在目录 <code>/var/lib/kubelet</code>  还没有建立</p>
+<p>查看日志:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# journalctl -xeu kubelet</span><br></pre></td></tr></table></figure>
+<p>可以看到:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Jan 16 11:05:16 longinus-master-1 kubelet[7227]: E0116 11:05:16.565328    7227 run.go:74] &quot;command failed&quot; err=&quot;failed to load kubelet config file, path: /var/lib/kubelet/config.yaml, error: failed to load Kubelet config file /var/lib/kubelet/config.yaml, error failed to&gt;</span><br><span class="line">Jan 16 11:05:16 longinus-master-1 systemd[1]: kubelet.service: Main process exited, code=exited, status=1/FAILURE</span><br></pre></td></tr></table></figure>
+<h2 id="part5-k8s-master建立单机集群"><a class="markdownIt-Anchor" href="#part5-k8s-master建立单机集群">#</a> PART5. K8S master 建立单机集群</h2>
+<h3 id="51-拉取所需镜像"><a class="markdownIt-Anchor" href="#51-拉取所需镜像">#</a> 5.1 拉取所需镜像</h3>
+<ul>
+<li>列出所需镜像</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubeadm config images list</span><br><span class="line">I0116 11:07:18.093407    7309 version.go:256] remote version is much newer: v1.29.0; falling back to: stable-1.28</span><br><span class="line">registry.k8s.io/kube-apiserver:v1.28.5</span><br><span class="line">registry.k8s.io/kube-controller-manager:v1.28.5</span><br><span class="line">registry.k8s.io/kube-scheduler:v1.28.5</span><br><span class="line">registry.k8s.io/kube-proxy:v1.28.5</span><br><span class="line">registry.k8s.io/pause:3.9</span><br><span class="line">registry.k8s.io/etcd:3.5.9-0</span><br><span class="line">registry.k8s.io/coredns/coredns:v1.10.1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>拉取镜像</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubeadm config images pull</span><br><span class="line">I0116 11:08:28.342502    7361 version.go:256] remote version is much newer: v1.29.0; falling back to: stable-1.28</span><br><span class="line">[config/images] Pulled registry.k8s.io/kube-apiserver:v1.28.5</span><br><span class="line">[config/images] Pulled registry.k8s.io/kube-controller-manager:v1.28.5</span><br><span class="line">[config/images] Pulled registry.k8s.io/kube-scheduler:v1.28.5</span><br><span class="line">[config/images] Pulled registry.k8s.io/kube-proxy:v1.28.5</span><br><span class="line">[config/images] Pulled registry.k8s.io/pause:3.9</span><br><span class="line">[config/images] Pulled registry.k8s.io/etcd:3.5.9-0</span><br><span class="line">[config/images] Pulled registry.k8s.io/coredns/coredns:v1.10.1</span><br></pre></td></tr></table></figure>
+<p>这里注意我们拉取镜像的版本，初始化集群时的版本要和镜像的版本相同</p>
+<h3 id="52-kubernetes初始化"><a class="markdownIt-Anchor" href="#52-kubernetes初始化">#</a> 5.2 Kubernetes 初始化</h3>
+<h4 id="521-初始化"><a class="markdownIt-Anchor" href="#521-初始化">#</a> 5.2.1 初始化</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubeadm init \</span><br><span class="line">--control-plane-endpoint=&quot;kubeapi.longinus.com&quot; \</span><br><span class="line">--kubernetes-version=v1.28.5 \</span><br><span class="line">--pod-network-cidr=10.244.0.0/16 \</span><br><span class="line">--service-cidr=10.96.0.0/12 \</span><br><span class="line">--token-ttl=0 \</span><br><span class="line">--cri-socket unix:///run/containerd/containerd.sock \</span><br><span class="line">--upload-certs</span><br></pre></td></tr></table></figure>
+<h4 id="522-选项解释"><a class="markdownIt-Anchor" href="#522-选项解释">#</a> 5.2.2 选项解释</h4>
+<ul>
+<li><code>--image-repository</code> : 指定要使用的镜像仓库，默认为 <code>registry.k8s.io</code></li>
+<li><code>--kubernetes-version</code> :kubernetes 程序组件的版本号，它必须要与安装的 kubelet 程序包的版本号相同</li>
+<li><code>--control-plane-endpoint</code> : 控制平面的固定访问端点，可以是 IP 地址或 DNS 名称，会被用于集群管理员及集群组件的 kubeconfig 配置文件的 API Server 的访问地址；单控制平面部署时可以不使用该选项</li>
+<li><code>--pod-network-cidr</code> :Pod 网络的地址范围，其值为 CIDR 格式的网络地址，通常，Flannel 网络插件的默认为 <code>10.244.0.0/16</code> ; <code>Project Calico</code>  插件的默认值为 <code>192.168.0.0/16</code></li>
+<li><code>--service-cidr</code> :Service 的网络地址范围，其值为 CIDR 格式的网络地址，默认为 <code>10.96.0.0/12</code> ; 通常，仅 Flannel 一类的网络插件需要手动指定该地址</li>
+<li><code>-apiserver-advertise-address</code> :apiserver 通告给其他组件的 IP 地址，一般应该为 Master 节点的用于集群内部通信的 IP 地址， <code>0.0.0.0</code>  表示节点上所有可用地址</li>
+<li><code>--token-ttl</code> : 共享令牌 (token) 的过期时长，默认为 24 小时，0 表示永不过期；为防止不安全存储等原因导致的令牌泄露危及集群安全，建议为其设定过期时长.
+<ul>
+<li>未设定该选项时，在 token 过期后，若期望再向集群中加入其它节点，可以使用如下命令重新创建 token, 并生成节点加入命令</li>
+<li><code>kubeadm token create --print-join-command</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="523-后续操作"><a class="markdownIt-Anchor" href="#523-后续操作">#</a> 5.2.3 后续操作</h4>
+<p>成功初始化后会提示后续操作:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Your Kubernetes control-plane has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"></span><br><span class="line">Alternatively, if you are the root user, you can run:</span><br><span class="line"></span><br><span class="line">  export KUBECONFIG=/etc/kubernetes/admin.conf</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">You can now join any number of the control-plane node running the following command on each as root:</span><br><span class="line"></span><br><span class="line">  kubeadm join kubeapi.longinus.com:6443 --token yczsfl.oz53z6pdlzg6l8of \</span><br><span class="line">	--discovery-token-ca-cert-hash sha256:cad8ad0e1f0553a6989cc9a9a73ffee219b714fd84ed6c1ce68f768ff18b733f \</span><br><span class="line">	--control-plane --certificate-key 6351ad49af82922a578621bf4d40dc17abfb2c218d041d2905bc97067771143d</span><br><span class="line"></span><br><span class="line">Please note that the certificate-key gives access to cluster sensitive data, keep it secret!</span><br><span class="line">As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use</span><br><span class="line">&quot;kubeadm init phase upload-certs --upload-certs&quot; to reload certs afterward.</span><br><span class="line"></span><br><span class="line">Then you can join any number of worker nodes by running the following on each as root:</span><br><span class="line"></span><br><span class="line">kubeadm join kubeapi.longinus.com:6443 --token yczsfl.oz53z6pdlzg6l8of \</span><br><span class="line">	--discovery-token-ca-cert-hash sha256:cad8ad0e1f0553a6989cc9a9a73ffee219b714fd84ed6c1ce68f768ff18b733f </span><br></pre></td></tr></table></figure>
+<h4 id="524-检查"><a class="markdownIt-Anchor" href="#524-检查">#</a> 5.2.4 检查</h4>
+<p>检查 6443 端口 (kube API Server) 是否被监听</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# lsof -i :6443</span><br><span class="line">COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">kube-cont 8170 root    8u  IPv4 155311      0t0  TCP k8s-master01.longinus.com:58406-&gt;k8s-master01.longinus.com:6443 (ESTABLISHED)</span><br><span class="line">kube-sche 8179 root    7u  IPv4 156409      0t0  TCP k8s-master01.longinus.com:58396-&gt;k8s-master01.longinus.com:6443 (ESTABLISHED)</span><br><span class="line">kube-sche 8179 root    8u  IPv4 156571      0t0  TCP k8s-master01.longinus.com:37666-&gt;k8s-master01.longinus.com:6443 (ESTABLISHED)</span><br><span class="line">kube-apis 8207 root    3u  IPv6 155276      0t0  TCP *:6443 (LISTEN)</span><br><span class="line">kube-apis 8207 root   68u  IPv6 155385      0t0  TCP k8s-master01.longinus.com:6443-&gt;k8s-master01.longinus.com:37666 (ESTABLISHED)</span><br><span class="line">kube-apis 8207 root   70u  IPv6 155370      0t0  TCP k8s-master01.longinus.com:6443-&gt;k8s-master01.longinus.com:58396 (ESTABLISHED)</span><br><span class="line">kube-apis 8207 root   71u  IPv6 155371      0t0  TCP k8s-master01.longinus.com:6443-&gt;k8s-master01.longinus.com:58406 (ESTABLISHED)</span><br><span class="line">kube-apis 8207 root   72u  IPv6 156908      0t0  TCP k8s-master01.longinus.com:6443-&gt;k8s-master01.longinus.com:37680 (ESTABLISHED)</span><br><span class="line">kube-apis 8207 root   85u  IPv6 156562      0t0  TCP ip6-localhost:58480-&gt;ip6-localhost:6443 (ESTABLISHED)</span><br><span class="line">kube-apis 8207 root   92u  IPv6 156569      0t0  TCP ip6-localhost:6443-&gt;ip6-localhost:58480 (ESTABLISHED)</span><br><span class="line">kubelet   8296 root   15u  IPv4 156907      0t0  TCP k8s-master01.longinus.com:37680-&gt;k8s-master01.longinus.com:6443 (ESTABLISHED)</span><br></pre></td></tr></table></figure>
+<h4 id="525-配置kubelet"><a class="markdownIt-Anchor" href="#525-配置kubelet">#</a> 5.2.5 配置 kubelet</h4>
+<p>kubectl 是 kube-apiserver 的命令行客户端程序，实现了除系统部署之外的几乎全部的管理操作，是 kubernetes 管理员使用最多的命令之一.kubectl 需经由 API server 认证及授权后方能执行相应的管理操作，kubeadm 部署的集群为其生成了一个具有管理员权限的认证配置文件 <code>/etc/kubernetes/admin.conf</code> , 它可由 kubectl 通过默认的 <code>$HOME/.kube/config</code>  的路径进行加载。当然，用户也可在 kubectl 命令上使用 <code>--kubeconfig</code>  选项指定一个别的位置.</p>
+<p>下面复制认证为 Kubernetes 系统管理员的配置文件至目标用户 (例如当前用户 root) 的家目录下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# mkdir ~/.kube</span><br><span class="line">root@longinus-master-1:~# cp /etc/kubernetes/admin.conf  ~/.kube/config</span><br><span class="line">root@longinus-master-1:~# ll ~/.kube/config</span><br><span class="line">-rw------- 1 root root 5652 Jan 16 11:22 /root/.kube/config</span><br></pre></td></tr></table></figure>
+<h3 id="53-安装cni网络插件"><a class="markdownIt-Anchor" href="#53-安装cni网络插件">#</a> 5.3 安装 CNI 网络插件</h3>
+<p>此处我们使用 Flannel 作为集群的网络插件</p>
+<h4 id="531-下载pod的配置文件"><a class="markdownIt-Anchor" href="#531-下载pod的配置文件">#</a> 5.3.1 下载 Pod 的配置文件</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# wget https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<h4 id="532-检查配置文件"><a class="markdownIt-Anchor" href="#532-检查配置文件">#</a> 5.3.2 检查配置文件</h4>
+<p>配置文件中的 <code>net-conf.json</code>  段需要与 Kubernetes 初始化时的 <code>pod-network-cidr</code>  配置的网段一致:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# vim kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">net-conf.json:</span> <span class="string">|</span></span><br><span class="line"><span class="string">  &#123;</span></span><br><span class="line"><span class="string">    &quot;Network&quot;: &quot;10.244.0.0/16&quot;,</span></span><br><span class="line"><span class="string">    &quot;Backend&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;Type&quot;: &quot;vxlan&quot;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="533-安装网络插件"><a class="markdownIt-Anchor" href="#533-安装网络插件">#</a> 5.3.3 安装网络插件</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl apply -f kube-flannel.yml</span><br><span class="line">namespace/kube-flannel created</span><br><span class="line">serviceaccount/flannel created</span><br><span class="line">clusterrole.rbac.authorization.k8s.io/flannel created</span><br><span class="line">clusterrolebinding.rbac.authorization.k8s.io/flannel created</span><br><span class="line">configmap/kube-flannel-cfg created</span><br><span class="line">daemonset.apps/kube-flannel-ds created</span><br></pre></td></tr></table></figure>
+<h4 id="534-查看集群网络状态"><a class="markdownIt-Anchor" href="#534-查看集群网络状态">#</a> 5.3.4 查看集群网络状态</h4>
+<h5 id="5341-系统级pod状态"><a class="markdownIt-Anchor" href="#5341-系统级pod状态">#</a> 5.3.4.1 系统级 Pod 状态</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get pod --all-namespaces</span><br><span class="line">NAMESPACE      NAME                                        READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-flannel   kube-flannel-ds-2clkz                       1/1     Running   0          44s</span><br><span class="line">kube-system    coredns-5dd5756b68-pqfhw                    1/1     Running   0          12m</span><br><span class="line">kube-system    coredns-5dd5756b68-vjd7k                    1/1     Running   0          12m</span><br><span class="line">kube-system    etcd-longinus-master-1                      1/1     Running   0          13m</span><br><span class="line">kube-system    kube-apiserver-longinus-master-1            1/1     Running   0          13m</span><br><span class="line">kube-system    kube-controller-manager-longinus-master-1   1/1     Running   0          13m</span><br><span class="line">kube-system    kube-proxy-j4bkt                            1/1     Running   0          12m</span><br><span class="line">kube-system    kube-scheduler-longinus-master-1            1/1     Running   0          13m</span><br></pre></td></tr></table></figure>
+<h5 id="5342-查看指定namespace中的pod状态"><a class="markdownIt-Anchor" href="#5342-查看指定namespace中的pod状态">#</a> 5.3.4.2 查看指定 namespace 中的 pod 状态</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get pod -n kube-system</span><br><span class="line">NAME                                        READY   STATUS    RESTARTS   AGE</span><br><span class="line">coredns-5dd5756b68-pqfhw                    1/1     Running   0          18m</span><br><span class="line">coredns-5dd5756b68-vjd7k                    1/1     Running   0          18m</span><br><span class="line">etcd-longinus-master-1                      1/1     Running   0          18m</span><br><span class="line">kube-apiserver-longinus-master-1            1/1     Running   0          18m</span><br><span class="line">kube-controller-manager-longinus-master-1   1/1     Running   0          18m</span><br><span class="line">kube-proxy-j4bkt                            1/1     Running   0          18m</span><br><span class="line">kube-scheduler-longinus-master-1            1/1     Running   0          18m</span><br></pre></td></tr></table></figure>
+<h5 id="5343-查看主节点状态"><a class="markdownIt-Anchor" href="#5343-查看主节点状态">#</a> 5.3.4.3 查看主节点状态</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get cs</span><br><span class="line">Warning: v1 ComponentStatus is deprecated in v1.19+</span><br><span class="line">NAME                 STATUS    MESSAGE   ERROR</span><br><span class="line">scheduler            Healthy   ok        </span><br><span class="line">controller-manager   Healthy   ok        </span><br><span class="line">etcd-0               Healthy   ok    </span><br></pre></td></tr></table></figure>
+<p>注意主节点应该不存在任何 <code>ERROR</code> , 组件状态都应为 <code>Healthy</code></p>
+<h5 id="5344-查看节点列表"><a class="markdownIt-Anchor" href="#5344-查看节点列表">#</a> 5.3.4.4 查看节点列表</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get node</span><br><span class="line">NAME                STATUS   ROLES           AGE   VERSION</span><br><span class="line">longinus-master-1   Ready    control-plane   19m   v1.28.2</span><br></pre></td></tr></table></figure>
+<h2 id="part6-其他节点加入集群"><a class="markdownIt-Anchor" href="#part6-其他节点加入集群">#</a> PART6. 其他节点加入集群</h2>
+<h3 id="61-创建一个24小时内有效的token"><a class="markdownIt-Anchor" href="#61-创建一个24小时内有效的token">#</a> 6.1 创建一个 24 小时内有效的 token</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubeadm token create --ttl 24h --print-join-command</span><br><span class="line">kubeadm join kubeapi.longinus.com:6443 --token u7xxyg.nxampvy3m22ifuf5 --discovery-token-ca-cert-hash sha256:cad8ad0e1f0553a6989cc9a9a73ffee219b714fd84ed6c1ce68f768ff18b733f </span><br></pre></td></tr></table></figure>
+<p>其中:</p>
+<ul>
+<li><code>--ttl</code> : 指定 token 的有效期为 24 小时</li>
+<li><code>--print-join-command</code> : 打印加入集群的命令</li>
+</ul>
+<h3 id="62-worker节点加入"><a class="markdownIt-Anchor" href="#62-worker节点加入">#</a> 6.2 worker 节点加入</h3>
+<p>在 <code>longinus-node-1</code> 、 <code>longinus-node-2</code> 、 <code>longinus-node-3</code>  上执行如下命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-node-1:~# kubeadm join kubeapi.longinus.com:6443 --token u7xxyg.nxampvy3m22ifuf5 --discovery-token-ca-cert-hash sha256:cad8ad0e1f0553a6989cc9a9a73ffee219b714fd84ed6c1ce68f768ff18b733f</span><br></pre></td></tr></table></figure>
+<p>执行结果如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[preflight] Running pre-flight checks</span><br><span class="line">[preflight] Reading configuration from the cluster...</span><br><span class="line">[preflight] FYI: You can look at this config file with &#x27;kubectl -n kube-system get cm kubeadm-config -o yaml&#x27;</span><br><span class="line">[kubelet-start] Writing kubelet configuration to file &quot;/var/lib/kubelet/config.yaml&quot;</span><br><span class="line">[kubelet-start] Writing kubelet environment file with flags to file &quot;/var/lib/kubelet/kubeadm-flags.env&quot;</span><br><span class="line">[kubelet-start] Starting the kubelet</span><br><span class="line">[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap...</span><br><span class="line"></span><br><span class="line">This node has joined the cluster:</span><br><span class="line">* Certificate signing request was sent to apiserver and a response was received.</span><br><span class="line">* The Kubelet was informed of the new secure connection details.</span><br><span class="line"></span><br><span class="line">Run &#x27;kubectl get nodes&#x27; on the control-plane to see this node join the cluster.</span><br></pre></td></tr></table></figure>
+<p>注：若需加入 master 节点，执行如下命令即可:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join kubeapi.longinus.com:6443 --token u7xxyg.nxampvy3m22ifuf5 --discovery-token-ca-cert-hash sha256:cad8ad0e1f0553a6989cc9a9a73ffee219b714fd84ed6c1ce68f768ff18b733f --control-plane</span><br></pre></td></tr></table></figure>
+<h3 id="63-查看节点列表"><a class="markdownIt-Anchor" href="#63-查看节点列表">#</a> 6.3 查看节点列表</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get nodes</span><br><span class="line">NAME                STATUS   ROLES           AGE   VERSION</span><br><span class="line">longinus-master-1   Ready    control-plane   38m   v1.28.2</span><br><span class="line">longinus-node-1     Ready    &lt;none&gt;          11m   v1.28.2</span><br><span class="line">longinus-node-2     Ready    &lt;none&gt;          10m   v1.28.2</span><br><span class="line">longinus-node-3     Ready    &lt;none&gt;          10m   v1.28.2</span><br></pre></td></tr></table></figure>
+<h2 id="part7-应用demo"><a class="markdownIt-Anchor" href="#part7-应用demo">#</a> PART7. 应用 Demo</h2>
+<h3 id="71-配置容器客户端"><a class="markdownIt-Anchor" href="#71-配置容器客户端">#</a> 7.1 配置容器客户端</h3>
+<p><code>crictl</code>  是遵循 CRI 接口规范的一个命令行工具，随 <code>containerd.io</code>  一起安装，常用它来检查和管理 kubelet 节点上的容器运行时和镜像</p>
+<p><code>crictl</code>  下载镜像时使用的默认端点 (endpoint) 是 <code>/var/run/dockershim.sock</code> , 这个已经在 k8s v1.24 起被废弃，需要我们手工指定为新的端点 <code>containerd.sock</code></p>
+<p>重新指定的工作需要通过配置 <code>/etc/crictl.yaml</code>  来完成:</p>
+<ul>
+<li>配置 <code>crictl</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# vim /etc/crictl.yaml</span><br><span class="line">root@longinus-master-1:~# cat /etc/crictl.yaml</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runtime-endpoint:</span> <span class="string">unix:///run/containerd/containerd.sock</span></span><br><span class="line"><span class="attr">image-endpoint:</span> <span class="string">unix:///run/containerd/containerd.sock</span></span><br><span class="line"><span class="attr">timeout:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">debug:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# crictl ps</span><br><span class="line">CONTAINER           IMAGE               CREATED             STATE               NAME                      ATTEMPT             POD ID              POD</span><br><span class="line">cf7dfb1a959a2       ead0a4a53df89       3 hours ago         Running             coredns                   0                   aec2d9225b4af       coredns-5dd5756b68-pqfhw</span><br><span class="line">7aaaec2646b00       ead0a4a53df89       3 hours ago         Running             coredns                   0                   f1c89af71f1b7       coredns-5dd5756b68-vjd7k</span><br><span class="line">dd4e3e673f68c       0dc86fe0f22e6       3 hours ago         Running             kube-flannel              0                   cd03aed7dea12       kube-flannel-ds-2clkz</span><br><span class="line">c7610d72422f0       01cf8d1d322dd       4 hours ago         Running             kube-proxy                0                   e02d52661f316       kube-proxy-j4bkt</span><br><span class="line">143a5a9e78c5a       9ecc4287300e3       4 hours ago         Running             kube-apiserver            0                   cdcaf8463c402       kube-apiserver-longinus-master-1</span><br><span class="line">2cc97f592243e       c527ad14e0cd5       4 hours ago         Running             kube-controller-manager   0                   f90326d0098d0       kube-controller-manager-longinus-master-1</span><br><span class="line">79ec5df88b210       73deb9a3f7025       4 hours ago         Running             etcd                      0                   d2709cd35d815       etcd-longinus-master-1</span><br><span class="line">092fccb8a6236       babc03668f18a       4 hours ago         Running             kube-scheduler            0                   02159eb6be4d3       kube-scheduler-longinus-master-1</span><br></pre></td></tr></table></figure>
+<h3 id="72-配置简单应用"><a class="markdownIt-Anchor" href="#72-配置简单应用">#</a> 7.2 配置简单应用</h3>
+<p>这里我们尝试使用 <code>crictl</code>  命令拉取一个 <code>nginx</code>  镜像，之后直接使用 <code>kubectl</code>  将 <code>nginx</code>  部署为 <code>pod</code> , 而后改为部署为 3 副本的 <code>pod</code> , 并暴露给集群外</p>
+<h4 id="721-拉取镜像"><a class="markdownIt-Anchor" href="#721-拉取镜像">#</a> 7.2.1 拉取镜像</h4>
+<ul>
+<li>拉取镜像</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# crictl pull docker.io/nginx</span><br><span class="line">Image is up to date for sha256:a8758716bb6aa4d90071160d27028fe4eaee7ce8166221a97d30440c8eac2be6</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# crictl images|grep nginx</span><br><span class="line">docker.io/library/nginx                         latest              a8758716bb6aa       70.5MB</span><br></pre></td></tr></table></figure>
+<h4 id="722-编排pod"><a class="markdownIt-Anchor" href="#722-编排pod">#</a> 7.2.2 编排 Pod</h4>
+<ul>
+<li>部署</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl create deployment nginx --image=docker.io/library/nginx:latest</span><br><span class="line">deployment.apps/nginx created</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get pod -o wide</span><br><span class="line">NAME                     READY   STATUS    RESTARTS   AGE   IP           NODE              NOMINATED NODE   READINESS GATES</span><br><span class="line">nginx-75446c786c-9b9nd   1/1     Running   0          50s   10.244.1.2   longinus-node-1   &lt;none&gt;           &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>调整 Pod 的副本数量为 3</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl scale --replicas=3 deployment/nginx</span><br><span class="line">deployment.apps/nginx scaled</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查调整后结果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get pods -o wide</span><br><span class="line">NAME                     READY   STATUS    RESTARTS   AGE     IP           NODE              NOMINATED NODE   READINESS GATES</span><br><span class="line">nginx-75446c786c-6dnxl   1/1     Running   0          86s     10.244.3.2   longinus-node-3   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">nginx-75446c786c-9b9nd   1/1     Running   0          3m25s   10.244.1.2   longinus-node-1   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">nginx-75446c786c-n5t9k   1/1     Running   0          86s     10.244.2.2   longinus-node-2   &lt;none&gt;           &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将 nginx 的东西向 80 端口，调整为南北向对外暴露的服务</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl expose deployment nginx --port=80 --type=NodePort</span><br><span class="line">service/nginx exposed</span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查 service</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-master-1:~# kubectl get service -o wide</span><br><span class="line">NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE    SELECTOR</span><br><span class="line">kubernetes   ClusterIP   10.96.0.1        &lt;none&gt;        443/TCP        4h1m   &lt;none&gt;</span><br><span class="line">nginx        NodePort    10.101.152.202   &lt;none&gt;        80:30788/TCP   25s    app=nginx</span><br></pre></td></tr></table></figure>
+<p>此时可以访问 3 个 worker 节点的 30788 端口</p>
+<h4 id="723-尝试访问应用"><a class="markdownIt-Anchor" href="#723-尝试访问应用">#</a> 7.2.3 尝试访问应用</h4>
+<h5 id="7231-访问pod的ip东西向"><a class="markdownIt-Anchor" href="#7231-访问pod的ip东西向">#</a> 7.2.3.1 访问 Pod 的 IP (东西向)</h5>
+<p>在任何一个节点上访问 3 个 pod 的 IP:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-node-1:~/.kube# curl 10.244.1.2</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">html &#123; color-scheme: light dark; &#125;</span><br><span class="line">body &#123; width: 35em; margin: 0 auto;</span><br><span class="line">font-family: Tahoma, Verdana, Arial, sans-serif; &#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</span><br><span class="line">working. Further configuration is required.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;For online documentation and support please refer to</span><br><span class="line">&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;</span><br><span class="line">Commercial support is available at</span><br><span class="line">&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-node-1:~/.kube# curl 10.244.2.2</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">html &#123; color-scheme: light dark; &#125;</span><br><span class="line">body &#123; width: 35em; margin: 0 auto;</span><br><span class="line">font-family: Tahoma, Verdana, Arial, sans-serif; &#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</span><br><span class="line">working. Further configuration is required.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;For online documentation and support please refer to</span><br><span class="line">&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;</span><br><span class="line">Commercial support is available at</span><br><span class="line">&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">root@longinus-node-1:~/.kube# curl 10.244.3.2</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Welcome to nginx!&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">html &#123; color-scheme: light dark; &#125;</span><br><span class="line">body &#123; width: 35em; margin: 0 auto;</span><br><span class="line">font-family: Tahoma, Verdana, Arial, sans-serif; &#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</span><br><span class="line">working. Further configuration is required.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;For online documentation and support please refer to</span><br><span class="line">&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;</span><br><span class="line">Commercial support is available at</span><br><span class="line">&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="7232-访问service南北向"><a class="markdownIt-Anchor" href="#7232-访问service南北向">#</a> 7.2.3.2 访问 Service (南北向)</h5>
+<p>访问 <code>http://192.168.1.57:30788/</code> 、 <code>http://192.168.1.58:30788/</code> 、 <code>http://192.168.1.59:30788/</code>  均可看到 Nginx 的首页</p>
+<h2 id="part8-备注"><a class="markdownIt-Anchor" href="#part8-备注">#</a> PART8. 备注</h2>
+<p>若想在 worker 节点上也使用 <code>kubectl</code>  命令操作集群，需要把控制平面节点上的 <code>~/.kube/config</code> ,scp 到 worker 节点上，确保该文件的权限为 0600 即可.</p>
+
+  </article>
+</div>
+
+
+    
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sai.show/2024/01/21/K8S%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/";
+    this.page.identifier = 1705841148;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://gith-u-b.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://sai.show" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2023 Sai</li>
+      <li><a href="https://sai.show">Home</a></li>
+      
+      <li><a target="_blank" rel="noopener" href="https://github.com/gith-u-b">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Author
+      by <a target="_blank" rel="noopener" href="//github.com/sabrinaluo">Sai</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":2,"width":250,"height":500,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
